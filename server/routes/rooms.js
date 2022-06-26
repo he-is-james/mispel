@@ -14,4 +14,9 @@ router.get('/join-room', (req, res) => {
   res.send('Join room!');
 });
 
+router.get('/room/:id', (req, res) => {
+  const roomId = req.params.id;
+  res.send(`Room ID: ${roomId}!`);
+});
+
 module.exports = router;

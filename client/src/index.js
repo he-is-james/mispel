@@ -1,16 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Landing from './pages/Landing';
-//import Roomcode from './pages/Roomcode'
-import Setup from './pages/CreateRoom'
+import JoinRoom from './pages/JoinRoom';
+import CreateRoom from './pages/CreateRoom'
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Setup/>
-  </React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="create-room" element={<CreateRoom />} />
+        <Route path="join-room" element={<JoinRoom />} />
+      </Routes>
+    </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

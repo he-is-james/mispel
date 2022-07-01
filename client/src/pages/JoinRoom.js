@@ -1,6 +1,6 @@
-import './Landing.css';
+import './JoinRoom.css';
 
-function Roomcode() {
+function JoinRoom() {
   return (
     <div className="Landing">
       <h2>Mispel</h2>
@@ -15,4 +15,4 @@ function Roomcode() {
   );
 }
 
-export default Roomcode;
+export default JoinRoom;

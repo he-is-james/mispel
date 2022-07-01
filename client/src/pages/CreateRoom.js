@@ -1,33 +1,29 @@
-import './Landing.css';
+import './CreateRoom.css';
+import { useState } from 'react';
 
-function Setup() {
+function CreateRoom() {
+  const [isCustom, setIsCustom] = useState(false);
+
+  const handleCustom =()=> {
+    const newState = !isCustom;
+    setIsCustom(newState);
+  }
+
   return (
-    <div className="Landing">
+    <div className="CreateRoom">
+      <h1>Set Up Your Game</h1>
+      <h3>Timer</h3>
+      {isCustom ? 
       <div>
-        <h2>Set Up Your Game</h2>
-        <table align="left">
-          <tr>
-            <th>Timer</th>
-          </tr>
-          <tr>
-            <td>10s</td>
-            <td>15s</td>
-            <td>30s</td>
-            <td>60s</td>
-            <td>
-              Custom <input type="number" name="name" />
-            </td>
-          </tr>
-          <tr>
-            <td>Max Players: <input type="number" name="name"/></td>
-          </tr>
-          <tr>
-            <button>Start</button>
-          </tr>
-        </table>
-      </div>
+        <button>10s</button>
+        <button>15s</button>
+        <button>30s</button>
+        <button>60s</button>
+      </div> : <></>}
+      
+      <button onClick={handleCustom}>Custom: </button>
     </div>
   );
 }
 
-export default Setup;
+export default CreateRoom;

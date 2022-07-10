@@ -13,15 +13,15 @@ function CreateRoom() {
     <div className="CreateRoom">
       <h1>Set Up Your Game</h1>
       <h3>Timer</h3>
+      <button>10s</button>
+      <button>15s</button>
+      <button>30s</button>
+      <button>60s</button>
+      <button onClick={handleCustom}>Custom: </button>
       {isCustom ? 
       <div>
-        <button>10s</button>
-        <button>15s</button>
-        <button>30s</button>
-        <button>60s</button>
+        <input type="text" name="name" />
       </div> : <></>}
-      
-      <button onClick={handleCustom}>Custom: </button>
     </div>
   );
 }

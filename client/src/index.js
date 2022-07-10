@@ -5,6 +5,7 @@ import './index.css';
 import Landing from './pages/Landing';
 import JoinRoom from './pages/JoinRoom';
 import CreateRoom from './pages/CreateRoom'
+import WaitingRoom from './pages/WaitingRoom'
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,6 +15,7 @@ root.render(
         <Route path="/" element={<Landing />} />
         <Route path="create-room" element={<CreateRoom />} />
         <Route path="join-room" element={<JoinRoom />} />
+        <Route path="waiting-room" element={<WaitingRoom />} />
       </Routes>
     </BrowserRouter>
 );

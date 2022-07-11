@@ -24,7 +24,7 @@ const deleteWords = async (db, toRemove) => {
 
 const findWords = async (db, toFind) => {
     const docs = await db.collection("fat").find(toFind).toArray();
-    console.log(docs.size + " words found");
+    console.log(docs.length + " words found");
     console.log(docs ? docs : "");
 }
 

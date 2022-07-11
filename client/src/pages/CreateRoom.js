@@ -1,5 +1,3 @@
-import './CreateRoom.css';
-import { useState } from 'react';
 
 function CreateRoom() {
   const [isCustom, setIsCustom] = useState(false);

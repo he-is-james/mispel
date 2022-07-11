@@ -1,4 +1,4 @@
-import './WaitingRoom.css';
+import { useState } from 'react';
 
 function WaitingRoom() {
   

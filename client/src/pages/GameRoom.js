@@ -1,4 +1,4 @@
-import "./GameRoom.css";
+import React from "react";
 import { useState } from "react";
 
 function GameRoom() {
@@ -8,7 +8,7 @@ function GameRoom() {
 		<div>
 			<button>Exit</button>
 			<label>Your word is:</label>
-			<button>#timer here</button>
+			<div>#timer here</div>
 			<button class="triangle">Play</button>
 			<label>Enter your guess</label>
 			<input type="text" name="name"/>

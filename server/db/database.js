@@ -1,6 +1,11 @@
-const {MongoClient} = require("mongodb");
+const {MongoClient, ObjectId} = require("mongodb");
+
+
 const wordJSON = require("../../words/words.json");
+const fs = require('fs')
+
 const dotenv = require('dotenv');
+
 
 dotenv.config();
 const uri = process.env.DB_URI;
@@ -40,14 +45,30 @@ const updateWords = async (db, toUpdate, updateTo) => {
     return result
 }
 
+const addMP3 = async (db) => {
+    var b64Str = fs.readFileSync('./output.mp3')
+    const encoded = new Buffer.from(b64Str, 'base64')
+    const document = {bytes: encoded }
+    db.collection('fat').insertOne(document)
+}
+
+
+const getMP3 = async (db) => {
+    const mp3 = await db.collection('fat').findOne({_id : ObjectId('62cb66b990eefb72169af51a')})
+    const mp3File = new Buffer.from(mp3.bytes.buffer, 'base64')
+    fs.writeFileSync('output_copy.mp3', mp3File);
+}
+
 client = new MongoClient(uri);
 
 client.connect()
     .then((db) => {
         dbo = db.db("test");
         // return addWords(dbo, toInsert).then(() => db);
-        return deleteWords(dbo, toDelete).then(() => db);
+        addMP3(dbo).then(() => db)
+        // return deleteWords(dbo, toDelete).then(() => db);
         // return updateWords(dbo, toUpdate).then(() => db);
+        getMP3(dbo).then(() => db)
     })
     .then((db) => {
         db.close();

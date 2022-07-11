@@ -23,15 +23,9 @@ const deleteWords = async (db, toRemove) => {
 } 
 
 const findWords = async (db, toFind) => {
-    let count = 0;
-    let docs = [];
-    const cursor = await db.collection("words").find(toFind);
-    cursor.forEach((x) => {
-        count+=1;
-        docs.push(x);
-    });
-    console.log(count + " words found");
-    console.log(count ? docs : "");
+    const docs = await db.collection("fat").find(toFind).toArray();
+    console.log(docs.size + " words found");
+    console.log(docs ? docs : "");
 }
 
 const updateWords = async (db, toUpdate, updateTo) => {
@@ -46,7 +40,8 @@ client.connect()
     .then((db) => {
         dbo = db.db("test");
         // return addWords(dbo, toInsert).then(() => db);
-        return deleteWords(dbo, toDelete).then(() => db);
+        findWords(dbo, toFind)
+        // return deleteWords(dbo, toDelete).then(() => db);
         // return updateWords(dbo, toUpdate).then(() => db);
     })
     .then((db) => {

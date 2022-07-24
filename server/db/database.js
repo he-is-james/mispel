@@ -58,23 +58,28 @@ const addMP3 = async (db) => {
 const getMP3 = async (db) => {
     const mp3 = await db.collection('fat').findOne({_id : ObjectId('62cb66b990eefb72169af51a')})
     const mp3File = new Buffer.from(mp3.value.buffer, 'base64')
-    fs.writeFileSync('output_copy.mp3', mp3File);
+    // fs.writeFileSync('output_copy.mp3', mp3File);
+    return mp3File;
 }
 
-client = new MongoClient(uri);
 
-client.connect()
-    .then((db) => {
-        console.log('hi')
-        dbo = db.db("test");
-        // addWords(db, ["test test"]);
-        // addMP3(dbo).then(() => db)
-        getMP3(dbo).then(() => db)
-    })
-    .then((db) => {
-        db.close();
-        console.log("client closed");
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+const getDb = async () => {
+  return new MongoClient(uri);
+}
+
+
+// client.connect()
+//     .then((db) => {
+//         console.log('hi')
+//         dbo = db.db("test");
+//         // addWords(db, ["test test"]);
+//         // addMP3(dbo).then(() => db)
+//         getMP3(dbo).then(() => db)
+//     })
+//     .then((db) => {
+//         db.close();
+//         console.log("client closed");
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     })

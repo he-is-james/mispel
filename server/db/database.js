@@ -7,6 +7,9 @@ const fs = require('fs')
 const dotenv = require('dotenv');
 
 
+console.log("hi");
+
+
 dotenv.config();
 const uri = process.env.DB_URI;
 
@@ -52,10 +55,9 @@ const addMP3 = async (db) => {
     db.collection('fat').insertOne(document)
 }
 
-
 const getMP3 = async (db) => {
     const mp3 = await db.collection('fat').findOne({_id : ObjectId('62cb66b990eefb72169af51a')})
-    const mp3File = new Buffer.from(mp3.bytes.buffer, 'base64')
+    const mp3File = new Buffer.from(mp3.value.buffer, 'base64')
     fs.writeFileSync('output_copy.mp3', mp3File);
 }
 
@@ -63,11 +65,10 @@ client = new MongoClient(uri);
 
 client.connect()
     .then((db) => {
+        console.log('hi')
         dbo = db.db("test");
-        // return addWords(dbo, toInsert).then(() => db);
-        addMP3(dbo).then(() => db)
-        // return deleteWords(dbo, toDelete).then(() => db);
-        // return updateWords(dbo, toUpdate).then(() => db);
+        // addWords(db, ["test test"]);
+        // addMP3(dbo).then(() => db)
         getMP3(dbo).then(() => db)
     })
     .then((db) => {

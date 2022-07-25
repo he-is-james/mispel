@@ -1,18 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
-import audioCtx from './index';
+
 import axios from 'axios';
 
 function App() {
+
   const handleClick = () => {
-    axios.get('/api/getSound').then((res) => {
-      const source = audioCtx.createBufferSource();
-      source.buffer = res.data;
-      source.connect(audioCtx.destination);
-      source.start();
+    // the blob and audio step only have to be done once 
+    // maybe memoize like streams
+    axios.get('http://localhost:5002/api/getSound').then((res) => {
+      const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
+      const audio = new Audio(URL.createObjectURL(blob));
+      audio.play()
     });
   }
-  
   return (
     <div className="App">
       <header className="App-header">
@@ -20,9 +21,11 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <button onClick = {handleClick}>
+
+        <button onClick={handleClick}>
           Play Sound
         </button>
+        
       </header>
     </div>
   );

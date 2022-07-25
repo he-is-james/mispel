@@ -67,6 +67,7 @@ const getDb = async () => {
   return new MongoClient(uri);
 }
 
+export default all;
 
 // client.connect()
 //     .then((db) => {

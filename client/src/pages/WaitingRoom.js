@@ -1,21 +1,29 @@
-//import { useState } from "react";
+import { useState } from "react";
+
+function Name(name) {
+  return (
+    <div className="text-3xl font-rubikone text-center mt-4">{name}</div>
+  )
+}
 
 function WaitingRoom() {
   
-  //const [playerList, setPlayerList] = useState([]);
+  const [playerList, setPlayerList] = useState(['test', 'urmom', 'jimmy', 'sunbun', 'shaybay']);
 
   return (
-    <div className="flex flex-col items-center bg-orange font-rubikone text-center text-white min-h-screen">
-      <div className="text-9xl mt-20">Room Code: <br/></div>
+    <div className="flex flex-col items-center bg-yellow font-rubikone text-center text-white min-h-screen">
+      <div className="text-8xl mt-20">Room Code: 1B3D5F<br/></div>
       <div class="relative flex py-5 items-center w-[90%]">
         <div class="flex-grow border-t border-2 border-white"></div>
       </div>
       <div className="flex flex-row w-[90%]">
-        <div className="align-left text-3xl">Players</div>
-        <button className="bg-green text-3xl py-2 px-4 rounded-md hover:bg-navy">Start</button>
+        <div className="align-center text-3xl ">Players</div>
+        <div className="flex flex-grow justify-end">
+          <button className="bg-navy text-3xl py-2 px-4 rounded-md hover:bg-sky">Start</button>
+        </div>
       </div>
-      <div class="grid-container">
-        <player>test</player>
+      <div class="grid grid-cols-3 w-full mt-8">
+        {playerList.map((name) => Name(name))}
       </div>
     </div>
   );

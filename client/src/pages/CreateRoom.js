@@ -19,9 +19,7 @@ function CreateRoom() {
         <button className="py-2 px-2 mr-8 rounded-sm hover:bg-sky focus:bg-sky">60s</button>
         <button onClick={handleCustom} className="py-2 px-2 rounded-sm hover:bg-sky focus:bg-navy">Custom</button>
         {isCustom ? 
-          <div>
-            <input type="numbers" name="name" className="text-center text-3xl bg-gray-400 w-1/4 h-12 rounded-md focus:outline-none"/>
-          </div> : <></>
+            <input type="numbers" name="name" className="text-3xl text-center bg-gray-400 ml-2 w-24 h-12 rounded-md focus:outline-none"/>: <></>
         }
       </div>
       <div className="flex flex-row flex-wrap justify-center mt-20 w-2/3">

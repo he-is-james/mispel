@@ -5,16 +5,22 @@ function GameRoom() {
 	const [score, setScore] = useState(0);
 
   return (
-		<div>
-			<button>Exit</button>
-			<label>Your word is:</label>
-			<div>#timer here</div>
-			<button class="triangle">Play</button>
-			<label>Enter your guess</label>
-			<input type="text" name="name"/>
-			<button>Submit</button>
-			<button>Options</button>
-			<label>Score: </label>
+		<div className="flex flex-row items-center bg-orange font-rubikone text-center text-white min-h-screen">
+			<div className="">
+				<button>Exit</button>
+        <button>Options</button>
+				<label>Your word is:</label>
+				<div>#timer here</div>
+			</div>
+			<div className="">
+        <button class="triangle">Play</button>
+        <label>Enter your guess</label>
+        <input type="text" name="name"/>
+      </div>
+			<div className="">
+        <button>Submit</button>
+        <label>Score: </label>
+      </div>
 		</div>
 	);
 }

@@ -8,7 +8,7 @@ function GameRoom() {
 		<div className="flex flex-row items-center bg-orange font-rubikone text-center text-white min-h-screen">
 			<div className="">
 				<button>Exit</button>
-        <button>Options</button>
+				<button>Options</button>
 				<label>Your word is:</label>
 				<div>#timer here</div>
 			</div>

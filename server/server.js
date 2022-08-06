@@ -2,7 +2,6 @@
 
 
 
-// const funcs = require("./db/database")
 const express = require('express');
 
 

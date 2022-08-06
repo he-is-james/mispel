@@ -9,9 +9,17 @@ function App() {
     // the blob and audio step only have to be done once 
     // maybe memoize like streams
     axios.get('http://localhost:5002/api/getSound').then((res) => {
-      const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
-      const audio = new Audio(URL.createObjectURL(blob));
-      audio.play()
+      console.log(res);
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioCtx.createBufferSource();
+      audioCtx.decodeAudioData(res.data, (buffer) => {
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.start();
+      });
+    // const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
+      // const audio = new Audio(URL.createObjectURL(blob));
+      // audio.play()
     });
   }
   return (

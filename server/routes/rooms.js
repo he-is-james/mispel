@@ -25,7 +25,13 @@ router.get("/api/getSound", (req, res) => {
   client.connect().then((db) => {
     dbo = db.db("test")
     return getMP3(dbo).then(buffer => {
-      res.send({buffer: buffer})
+      var len = buffer.length;
+      var arrBuffer = new ArrayBuffer(len);
+      var view = new Uint8Array(buffer);
+      for (var i = 0; i < len; i++) {
+        view[i] = arrBuffer.data.charCodeAt(i) & 0xff;
+      }
+      res.send(view);
     }).then(() => db)
   }).then((db) => db.close())
 });
@@ -92,7 +98,7 @@ const addMP3 = async (db) => {
 
 const getMP3 = async (db) => {
     const mp3 = await db.collection('fat').findOne({_id : ObjectId('62cb66b990eefb72169af51a')})
-    const mp3File = new Buffer.from(mp3.value.buffer, 'base64')
+    const mp3File = mp3.value;
     // const mp3File = mp3.value.buffer.toString("base64");
     // fs.writeFileSync('output_copy.mp3', mp3File);
     return mp3File;

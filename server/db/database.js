@@ -49,14 +49,45 @@ const getMP3 = async (db) => {
     return mp3File;
 }
 
-const createRoom = async (db, newRoom) => {
-    const result =  await db.collection("rooms").insertOne(newRoom);
-    console.log(result.insertedId);
+const updatePlayerScores = async (db, roomName, playerName, score) => {
+    await db.collection("rooms").updateOne(
+        {name: roomName},
+        {
+            $set: {players: {$elemMatch:{name: playerName, score: score}}}
+        }
+    )
+}
+
+const createRoom = async (db, roomName, hostName) => {
+    const newRoom = {
+        name: roomName,
+        players: [
+            {
+            name: hostName,
+            score: 0,
+            }
+        ],
+        currentWordPosition: 0,
+        words: [],
+        // words: [
+        //     "restaurant", "reliable"
+        // ],
+        attempts: [],
+        // attempts: [
+        //     ["resterant", "retaurent"],
+        //     ["relable", "realable"]
+        // ],
+        settings: {
+            time: 15,
+            numberOfWords: 20,
+        }
+    }
+    await db.collection("rooms").insertOne(newRoom);
 } 
 
-const joinRoom = async (db, player) => {
+const joinRoom = async (db, roomName, player) => {
     const result = await db.collection("rooms").updateOne(
-      {name: 'test'},
+      {name: roomName},
       {
         $push: { players: player}
       }
@@ -69,8 +100,8 @@ const getRoom = async (db, roomName) => {
         name: roomName
       }
     ).toArray();
-    console.log(result[0].players)
-  }
+    return result[0]
+}
 
 module.exports = {
     addWords,
@@ -80,6 +111,7 @@ module.exports = {
     getRandomWord,
     addMP3,
     getMP3,
+    updatePlayerScores,
     createRoom,
     joinRoom,
     getRoom,

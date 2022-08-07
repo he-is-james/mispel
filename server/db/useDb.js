@@ -9,6 +9,7 @@ const {
     getRandomWord,
     addMP3,
     getMP3,
+    updatePlayerScores,
     createRoom,
     joinRoom,
     getRoom,
@@ -24,22 +25,7 @@ const wordsArray = (wordJSON.words).map(x => {return {word: x}});
 connectToDb(async () => {
     db = getDb();
     dbo = db.db('db');
-    const room = {
-        name: 'test',
-        players: [
-          {
-            name: "shudumb",
-            score: 0
-          }
-        ],
-        words: {
-          word1: "restaurant"
-        },
-        settings: {
-          time: 30
-        }
-      }
-    await createRoom(dbo, room);
-    console.log(`created room: ${room}`);
+    await createRoom(dbo, 'leetcodeHard', 'ISmurfInterviews');
+    console.log(`created room`);
     db.close();
 })

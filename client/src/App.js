@@ -8,7 +8,7 @@ function App() {
   const handleClick = () => {
     // the blob and audio step only have to be done once 
     // maybe memoize like streams
-    axios.get('http://localhost:5002/api/getSound').then((res) => {
+    axios.get('http://localhost:5000/api/getSound').then((res) => {
       console.log(res);
       const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
       const audio = new Audio(URL.createObjectURL(blob));

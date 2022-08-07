@@ -1,4 +1,4 @@
-const {MongoClient, ObjectId} = require("mongodb");
+const {MongoClient} = require("mongodb");
 require('dotenv').config();
 
 const uri = process.env.DB_URI;
@@ -12,7 +12,6 @@ async function connectToDb(callback) {
             return callback(err);
         }
         dbConn = db;
-        console.log(`connected to db`);
 
         return callback();
     });

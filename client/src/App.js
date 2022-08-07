@@ -10,16 +10,9 @@ function App() {
     // maybe memoize like streams
     axios.get('http://localhost:5002/api/getSound').then((res) => {
       console.log(res);
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const source = audioCtx.createBufferSource();
-      audioCtx.decodeAudioData(res.data, (buffer) => {
-        source.buffer = buffer;
-        source.connect(audioCtx.destination);
-        source.start();
-      });
-    // const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
-      // const audio = new Audio(URL.createObjectURL(blob));
-      // audio.play()
+      const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
+      const audio = new Audio(URL.createObjectURL(blob));
+      audio.play()
     });
   }
   return (

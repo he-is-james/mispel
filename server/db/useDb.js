@@ -1,5 +1,6 @@
-const {MongoClient} = require("mongodb");
+const {ObjectId} = require("mongodb");
 const {connectToDb, getDb} = require('./conn');
+const {getSpeech} = require('./textToSpeech');
 //database operations
 const {
     addWords,
@@ -7,39 +8,42 @@ const {
     deleteWords,
     updateWords,
     getRandomWord,
-    addMP3,
     getMP3,
     createRoom,
     joinRoom,
     getRoom,
 } = require('./database');
 
-let randomword = '';
-
-
 const wordJSON = require("../../words/words.json");
 
-const wordsArray = (wordJSON.words).map(x => {return {word: x}});
+
+async function getWordArray(chunkSize) {
+  let words = [];
+  for (let i = 0; i < wordJSON.words.length+chunkSize; i+=chunkSize) {
+     words = words.concat(await Promise.all((wordJSON.words.slice(i,i+chunkSize)).map(async (x) => {
+      const speech = await getSpeech(x.word);
+      return {
+        word: x.word,
+        definition: x.definition,
+        audio: speech,
+      }
+    })));
+    console.log(`converted ${i+chunkSize} words to speech`);
+    await new Promise(r => setTimeout(r, 61000));
+  }
+  return words;
+}
+
+
+
 
 connectToDb(async () => {
     db = getDb();
     dbo = db.db('db');
-    const room = {
-        name: 'test',
-        players: [
-          {
-            name: "shudumb",
-            score: 0
-          }
-        ],
-        words: {
-          word1: "restaurant"
-        },
-        settings: {
-          time: 30
-        }
-      }
-    await createRoom(dbo, room);
-    console.log(`created room: ${room}`);
+    // const wordArray = await getWordArray(900);
+    // console.log(wordArray);
+    // await addWords(dbo, wordArray);
+    // await deleteWords(dbo, {});
+    console.log('complete');
     db.close();
 })

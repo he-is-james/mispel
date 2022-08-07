@@ -35,17 +35,10 @@ const updateWords = async (db, toUpdate, updateTo) => {
     return result
 }
 
-const addMP3 = async (db) => {
-    var b64Str = fs.readFileSync('./output.mp3')
-    const encoded = new Buffer.from(b64Str, 'base64')
-    const document = {bytes: encoded }
-    db.collection('fat').insertOne(document)
-}
-
 const getMP3 = async (db) => {
     const mp3 = await db.collection('fat').findOne({_id : ObjectId('62cb66b990eefb72169af51a')})
     const mp3File = new Buffer.from(mp3.value.buffer, 'base64')
-    // fs.writeFileSync('output_copy.mp3', mp3File);
+    fs.writeFileSync('output_copy.mp3', mp3File);
     return mp3File;
 }
 
@@ -70,7 +63,8 @@ const getRoom = async (db, roomName) => {
       }
     ).toArray();
     console.log(result[0].players)
-  }
+}
+
 
 module.exports = {
     addWords,
@@ -78,7 +72,6 @@ module.exports = {
     deleteWords,
     updateWords,
     getRandomWord,
-    addMP3,
     getMP3,
     createRoom,
     joinRoom,

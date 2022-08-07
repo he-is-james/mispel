@@ -9,6 +9,7 @@ const {
     updateWords,
     getRandomWord,
     getMP3,
+    updatePlayerScores,
     createRoom,
     joinRoom,
     getRoom,

@@ -2,9 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 
 import axios from 'axios';
+import {io} from 'socket.io-client';
 
 function App() {
-
+  const socket = io('http://localhost:5000');
+  
   const handleClick = () => {
     // the blob and audio step only have to be done once 
     // maybe memoize like streams
@@ -15,6 +17,12 @@ function App() {
       audio.play()
     });
   }
+
+  const connect = () => {
+    socket.on("connect", () => {
+      console.log(socket.id);
+    })
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -23,7 +31,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
 
-        <button onClick={handleClick}>
+        <button onClick={connect}>
           Play Sound
         </button>
         

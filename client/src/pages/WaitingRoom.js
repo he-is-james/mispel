@@ -12,15 +12,15 @@ function WaitingRoom() {
 
   return (
     <div className="flex flex-col items-center bg-yellow font-rubikone text-center text-white min-h-screen">
-      <div className=" mt-12 text-9xl">Mispel</div>
-      <div className="text-8xl mt-12">Room Code: 1B3D5F<br/></div>
+      <div className=" mt-12 text-8xl">Mispel</div>
+      <div className="text-7xl mt-12">Room Code: 1B3D5F<br/></div>
       <div class="relative flex py-5 items-center w-[90%]">
         <div class="flex-grow border-t border-2 border-white"></div>
       </div>
       <div className="flex flex-row w-[90%]">
         <div className="align-center text-5xl ">Players</div>
         <div className="flex flex-grow justify-end">
-          <button className="bg-navy text-5xl py-2 px-6 rounded-md hover:bg-sky">Start</button>
+          <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky">Start</button>
         </div>
       </div>
       <div class="grid grid-cols-3 w-full mt-8">

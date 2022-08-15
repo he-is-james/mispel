@@ -14,6 +14,9 @@ module.exports = {
         'orange': '#F26419',
         'white': '#FFFFFF',
         'black': '#000000',
+        'silver': '#C4C4C4',
+        'gold': '#F3AC22',
+        'bronze': '#BB793C'
       },
     },
     fontFamily: {

@@ -4,11 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Landing from './pages/Landing';
 import JoinRoom from './pages/JoinRoom';
-import CreateRoom from './pages/CreateRoom'
-import WaitingRoom from './pages/WaitingRoom'
-import GameRoom from './pages/GameRoom'
-import Leaderboard from './pages/Leaderboard'
-import Podium from './pages/Podium'
+import CreateRoom from './pages/CreateRoom';
+import WaitingRoom from './pages/WaitingRoom';
+import GameRoom from './pages/GameRoom';
+import Leaderboard from './pages/Leaderboard';
+import Podium from './pages/Podium';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

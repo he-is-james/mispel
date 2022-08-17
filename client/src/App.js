@@ -1,26 +1,41 @@
-import Landing from './pages/Landing';
-import JoinRoom from './pages/JoinRoom';
-import CreateRoom from './pages/CreateRoom'
-import WaitingRoom from './pages/WaitingRoom'
-import GameRoom from './pages/GameRoom'
-import Leaderboard from './pages/Leaderboard'
-import Podium from './pages/Podium'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import logo from './logo.svg';
+import './App.css';
+
+import axios from 'axios';
+import {io} from 'socket.io-client';
 
 function App() {
+  const socket = io('http://localhost:5000');
+  
+  const handleClick = () => {
+    // the blob and audio step only have to be done once 
+    // maybe memoize like streams
+    axios.get('http://localhost:5000/api/getSound').then((res) => {
+      console.log(res);
+      const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
+      const audio = new Audio(URL.createObjectURL(blob));
+      audio.play()
+    });
+  }
+
+  const connect = () => {
+    socket.on("connect", () => {
+      console.log(socket.id);
+    })
+  }
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="create-room" element={<CreateRoom />} />
-          <Route path="join-room" element={<JoinRoom />} />
-          <Route path="waiting-room" element={<WaitingRoom />} />
-          <Route path="game-room" element={<GameRoom />} />
-          <Route path="leaderboard" element={<Leaderboard />} />
-          <Route path="podium" element={<Podium />} />
-        </Routes>
-      </BrowserRouter>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+
+        <button onClick={connect}>
+          Play Sound
+        </button>
+        
+      </header>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import Options from '../components/Options';
 import Standings from '../components/Standings';
 

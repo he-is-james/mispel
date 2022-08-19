@@ -3,7 +3,6 @@ import Options from '../components/Options';
 import Standings from '../components/Standings';
 
 function Podium() {
-
 	return (
 		<div className="flex flex-col items-center justify-center bg-orange font-rubikone text-center text-white min-h-screen">
 			<label className="text-7xl mt-12">Mispel</label>
@@ -25,5 +24,4 @@ function Podium() {
 		</div>
 	);
 }
-
 export default Podium;

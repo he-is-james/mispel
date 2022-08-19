@@ -1,9 +1,17 @@
 import { useState } from 'react';
 import Options from '../components/Options';
+import LeaderboardList from '../components/LeaderboardList';
 
 function Leaderboard() {
 
-	const [playerList, setPlayerList] = useState([])
+	class Player {
+		constructor(name, score) {
+			this.name = name;
+			this.score = score;
+		}
+	}
+
+	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100)]);
 
 	return (
 		<div className="flex flex-col items-center bg-navy font-rubikone text-center text-white min-h-screen">
@@ -17,11 +25,8 @@ function Leaderboard() {
 			<div class="relative flex py-5 items-center w-[90%]"> 
         <div class="flex-grow border-t border-2 border-white"></div>
       </div>
-			<hr/>
-			<div className="space-y-1.5">
-				
-			</div>
-			<div className="flex flex-row mt-auto mb-12 w-[90%] mt-12">
+			<LeaderboardList playerList={playerList} />
+			<div className="flex flex-row mt-auto mb-12 w-[90%]">
 				<Options/>
 				<div className="flex flex-grow justify-end">
 					<button className="bg-yellow text-4xl p-4 rounded-md hover:bg-orange">Finish Game</button>

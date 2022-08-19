@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {io} from 'socket.io-client';
 
 function Name(name) {
   return (
@@ -7,7 +8,13 @@ function Name(name) {
 }
 
 function WaitingRoom() {
-  
+  const socket = io('http://localhost:5000');
+
+  useEffect(() => {
+    socket.on('connect', () => {})
+    socket.emit('player-join', { playerName: 'kevy' })
+  })
+
   const [playerList, setPlayerList] = useState(['test', 'urmom', 'jimmy', 'sunbun', 'shaybay']);
 
   return (

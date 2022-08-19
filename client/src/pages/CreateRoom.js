@@ -1,7 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TimeButton from '../components/TimeButton';
+import {io} from 'socket.io-client';
 
 function CreateRoom() {
+  const socket = io('http://localhost:5000');
+
+  useEffect(() => {
+    socket.on('connect', () => {})
+  })
+
+  const handleCreateRoom = () => {
+    socket.emit('host-game', { name: 'ShuDumb' })
+  }
+
   const [isCustom, setIsCustom] = useState(false);
 
   const handleCustom =()=> {
@@ -31,7 +42,7 @@ function CreateRoom() {
         <div className="text-5xl">Max Players:</div>
         <input type="numbers" name="name" className="text-center text-3xl bg-gray-400 w-32 h-12 mt-4 ml-4 rounded-md focus:outline-none"/>
       </div>
-      <button className="bg-orange text-4xl py-2 px-7 mt-20 rounded-md hover:bg-green">Create Room</button>
+      <button onClick={handleCreateRoom} className="bg-orange text-4xl py-2 px-7 mt-20 rounded-md hover:bg-green">Create Room</button>
     </div>
   );
 }

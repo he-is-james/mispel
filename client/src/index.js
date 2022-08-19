@@ -1,23 +1,17 @@
+import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.js';
 
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-// const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const root = ReactDOM.createRoot(
+  document.getElementById('root')
+);
 root.render(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="create-room" element={<CreateRoom />} />
-        <Route path="join-room" element={<JoinRoom />} />
-        <Route path="waiting-room" element={<WaitingRoom />} />
-        <Route path="game-room" element={<GameRoom />} />
-        <Route path="leaderboard" element={<Leaderboard />} />
-        <Route path="podium" element={<Podium />} />
-      </Routes>
-    </BrowserRouter>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

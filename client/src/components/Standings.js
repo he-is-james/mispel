@@ -28,4 +28,4 @@ function Standings() {
   );
 }
 
-export default Standings
+export default Standings;

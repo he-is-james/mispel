@@ -16,8 +16,14 @@ app.use(cors());
 app.use(require('./routes/rooms'));
 
 io.on('connection', (socket) => {
+  console.log(socket.id);
   socket.on('host-game', (data) => {
-    socket.join(data.name)
+    socket.join(data.name);
+  })
+
+  socket.on('find-room', (data) => {
+    const rooms = io.of("/").adapter.rooms;
+    socket.emit(rooms.get(data.name) ? 'room-exist' : 'room-dne');
   })
 
   socket.on('player-join', (data) => {

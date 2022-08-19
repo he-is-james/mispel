@@ -1,21 +1,24 @@
 import { useEffect } from 'react';
-import {io} from 'socket.io-client';
+import { useNavigate } from 'react-router-dom';
 
-function JoinRoom() {
-  const socket = io('http://localhost:5000');
+function JoinRoom({socket, redirect}) {
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.on('connect', () => {})
     socket.on('room-exist', () => {
       // TODO: redirect to waiting room
+      redirect('waiting-room', navigate);
     })
     socket.on('room-dne', () => {
-      // TODO: handle non-existant room
+      // TODO: handle non-existent room
+      alert('room does not exist try again');
     })
   })
 
   const handleJoinRoom = () => {
-    socket.emit('room-exist', { name: 'ShuDumb' })
+    socket.emit('find-room', { name: 'ShuDumb' })
+
   }
 
   return (

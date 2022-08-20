@@ -1,14 +1,21 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function JoinRoom({socket, redirect}) {
+  const location = useLocation();
   const navigate = useNavigate();
 
+  const [roomIDForm, setRoomIDForm] = useState('');  
   useEffect(() => {
-    socket.on('connect', () => {})
     socket.on('room-exist', () => {
       // TODO: redirect to waiting room
-      redirect('waiting-room', navigate);
+      redirect('waiting-room', navigate, 
+        {state: {
+          roomID: roomIDForm,
+          playerName: location.state.playerName,
+          isHost: false,
+        }}
+      );
     })
     socket.on('room-dne', () => {
       // TODO: handle non-existent room
@@ -17,8 +24,12 @@ function JoinRoom({socket, redirect}) {
   })
 
   const handleJoinRoom = () => {
-    socket.emit('find-room', { name: 'ShuDumb' })
+    socket.emit('find-room', { name: roomIDForm })
+  }
 
+  const handleChange = (event) => {
+    event.preventDefault();
+    setRoomIDForm(event.target.value);
   }
 
   return (
@@ -26,7 +37,7 @@ function JoinRoom({socket, redirect}) {
       <div className="text-9xl">Mispel</div>
       <form className="mt-6">
         <label className="text-4xl">Enter Room Code:<br/></label>
-        <input type="text" name="name" className="text-center text-3xl bg-gray-400 mt-6 w-3/4 h-12 rounded-md focus:outline-none"/>
+        <input value = {roomIDForm} onChange = {handleChange} type="text" name="name" className="text-center text-3xl bg-gray-400 mt-6 w-3/4 h-12 rounded-md focus:outline-none"/>
       </form>
       <button onClick={handleJoinRoom} className="bg-navy text-4xl py-2 px-10 mt-8 rounded-md hover:bg-green">Join Room</button>
     </div>

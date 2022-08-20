@@ -7,7 +7,7 @@ import Leaderboard from './pages/Leaderboard'
 import Podium from './pages/Podium'
 import {io} from 'socket.io-client';
 import {useState, useEffect} from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // const socket = io('http://localhost:5000');
 function App() {
@@ -20,8 +20,8 @@ function App() {
     return () => newSocket.close();
   }, [setSocket]);
 
-  const redirect = (path, navigate) => {
-    navigate(`/${path}`);
+  const redirect = (path, navigate, state) => {
+    navigate(`/${path}`, state);
   }
 
   return (

@@ -1,11 +1,19 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import TimeButton from '../components/TimeButton';
 
 
-function CreateRoom({socket}) {
-
+function CreateRoom({socket, redirect}) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const handleCreateRoom = () => {
-    socket.emit('host-game', { name: 'ShuDumb' });
+    redirect('waiting-room', navigate, 
+      {state: {
+        playerName: location.state.playerName,
+        isHost: true,
+        roomID: (Math.floor(Math.random() * 100)).toString()
+      }}
+    );
   }
 
   const [isCustom, setIsCustom] = useState(false);

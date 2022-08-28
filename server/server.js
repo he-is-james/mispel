@@ -16,14 +16,14 @@ app.use(cors());
 app.use(require('./routes/rooms'));
 
 io.on('connection', (socket) => {
-  console.log(socket.id);
   socket.on('host-game', (data) => {
-    console.log(`room: ${data.name} created`);
-    socket.join(data.name);
+    console.log(`room: ${data.roomID} created`);
+    socket.playerName = data.playerName;
+    socket.isHost = true;
+    socket.join(data.roomID);
   })
 
   socket.on('find-room', (data) => {
-    console.log('hi');
     const rooms = io.of("/").adapter.rooms;
     socket.emit(rooms.get(data.name) ? 'room-exist' : 'room-dne');
   })
@@ -32,14 +32,25 @@ io.on('connection', (socket) => {
     io.to(data.requesterID).emit('sent-player-list', {playerList: data.playerList});
   })
   socket.on('player-join', (data) => {
-    console.log(data);
+    socket.playerName = data.playerName;
     socket.join(data.roomID);
     socket.to(data.roomID).emit('request-player-list', {requesterID: data.socketID});
     socket.to(data.roomID).emit('player-join', {playerName: data.playerName});
   })
-
+  socket.on("disconnecting", async (reason) => {
+    const [, roomID] = socket.rooms;
+    if (socket.isHost) {
+      const sockets = await io.in(roomID).fetchSockets();
+      if (sockets.length > 1) {
+        const newHost = sockets[1];
+        newHost.isHost = true;
+        io.to(newHost.id).emit('become-host');
+      }
+    }
+    socket.to(roomID).emit('player-left', {playerName: socket.playerName});
+  })
   socket.on("disconnect", (reason) => {
-    console.log('disconnect');
+    console.log(`socket ${socket.id} disconnect`);
   });
 })
 

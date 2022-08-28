@@ -19,7 +19,12 @@ function App() {
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
-
+  window.onbeforeunload = function() { 
+    window.setTimeout(function () { 
+        window.location = '/';
+    }, 0); 
+    window.onbeforeunload = null; // necessary to prevent infinite loop, that kills your browser 
+  }
   const redirect = (path, navigate, state) => {
     navigate(`/${path}`, state);
   }

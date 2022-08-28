@@ -9,22 +9,24 @@ function JoinRoom({socket, redirect}) {
   useEffect(() => {
     socket.on('room-exist', () => {
       // TODO: redirect to waiting room
-      redirect('waiting-room', navigate, 
-        {state: {
-          roomID: roomIDForm,
-          playerName: location.state.playerName,
-          isHost: false,
-        }}
-      );
+      setRoomIDForm((roomID) => {
+        redirect('waiting-room', navigate, 
+          {state: {
+            roomID: roomID,
+            playerName: location.state.playerName,
+            isHost: false,
+          }}
+        );
+      });
     })
     socket.on('room-dne', () => {
       // TODO: handle non-existent room
-      alert('room does not exist try again');
+      alert('this room does not exist');
     })
-  })
+  }, []);
 
   const handleJoinRoom = () => {
-    socket.emit('find-room', { name: roomIDForm })
+    socket.emit('find-room', { name: roomIDForm });
   }
 
   const handleChange = (event) => {

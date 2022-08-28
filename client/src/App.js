@@ -11,7 +11,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // const socket = io('http://localhost:5000');
 function App() {
-
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -34,6 +33,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing socket = {socket} redirect = {redirect}/>} />
+          <Route path="/:roomID" element={<Landing socket = {socket} redirect = {redirect}/>} />
           <Route path="create-room" element={<CreateRoom socket = {socket} redirect = {redirect}/>} />
           <Route path="join-room" element={<JoinRoom socket = {socket} redirect = {redirect}/>} />
           <Route path="waiting-room" element={<WaitingRoom socket = {socket} redirect = {redirect}/> } />

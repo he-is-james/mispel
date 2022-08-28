@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
     socket.to(data.roomID).emit('player-join', {playerName: data.playerName});
   })
   socket.on("disconnecting", async (reason) => {
+    
     const [, roomID] = socket.rooms;
     if (socket.isHost) {
       const sockets = await io.in(roomID).fetchSockets();

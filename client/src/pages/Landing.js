@@ -35,9 +35,9 @@ function Landing({redirect}) {
         </label>
         <input value = {usernameForm} onChange = {handleChange} type="text" name="name" className="text-center text-3xl bg-gray-400 mt-6 w-[75%] h-12 rounded-md focus:outline-none"/>
       </div>
-      <button onClick = {onJoin} className="bg-navy text-4xl py-2 px-10 mt-8 rounded-md hover:bg-sky">Join Room</button>
+      <button disabled = {usernameForm === ''} onClick = {onJoin} className="bg-navy text-4xl py-2 px-10 mt-8 rounded-md hover:bg-sky">Join Room</button>
       <br/>
-      <button onClick = {onCreate} className="bg-navy text-4xl py-2 px-7 mt-2 rounded-md hover:bg-sky">Create Room</button>
+      <button disabled = {usernameForm === ''} onClick = {onCreate} className="bg-navy text-4xl py-2 px-7 mt-2 rounded-md hover:bg-sky">Create Room</button>
     </div>
   );
 }

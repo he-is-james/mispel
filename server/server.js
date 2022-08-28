@@ -37,6 +37,9 @@ io.on('connection', (socket) => {
     socket.to(data.roomID).emit('request-player-list', {requesterID: data.socketID});
     socket.to(data.roomID).emit('player-join', {playerName: data.playerName});
   })
+  socket.on('start-game', (data) => {
+    io.to(data.roomID).emit('start-player')
+  })
   socket.on("disconnecting", async (reason) => {
     
     const [, roomID] = socket.rooms;

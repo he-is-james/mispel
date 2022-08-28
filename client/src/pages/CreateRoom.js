@@ -6,8 +6,15 @@ import TimeButton from '../components/TimeButton';
 function CreateRoom({socket, redirect}) {
   const navigate = useNavigate();
   const location = useLocation();
+  const handleBackButton = () => {
+    redirect('', navigate,
+      {state: {
+        playerName: location.state.playerName,
+      }}
+    );
+  }
   const handleCreateRoom = () => {
-    redirect('waiting-room', navigate, 
+    redirect('waiting-room', navigate,
       {state: {
         playerName: location.state.playerName,
         isHost: true,
@@ -28,14 +35,14 @@ function CreateRoom({socket, redirect}) {
 
   return (
     <div className="bg-navy min-h-screen font-rubikone text-white">
-      <button className="bg-orange text-4xl py-2 px-7 mt-20 ml-20 rounded-md hover:bg-sky">Back</button>
+      <button onClick={handleBackButton} className="bg-orange text-4xl py-2 px-7 mt-20 ml-20 rounded-md hover:bg-sky">Back</button>
       <div className="flex flex-col items-center text-center">
         <div className="text-9xl align-top mt-20">Set Up Your Game</div>
         <div className="text-5xl mt-20">Timer</div>
         <div className="flex-row items-center text-4xl mt-4">
-          {times.map((time, index) => <TimeButton time={time} active={active===index} onClick={() => setActive(index)}/>)}
+          {times.map((time, index) => <TimeButton key={index} time={time} active={active===index} onClick={() => setActive(index)}/>)}
           <button onClick={handleCustom} className="py-2 px-2 rounded-sm hover:underline">Custom</button>
-          {isCustom ? 
+          {isCustom ?
               <input type="numbers" name="name" className="text-3xl text-center bg-gray-400 ml-2 w-24 h-12 rounded-md focus:outline-none"/>: <></>
           }
         </div>

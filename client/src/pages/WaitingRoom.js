@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 function Name(name, key) {
   return (
@@ -7,8 +7,9 @@ function Name(name, key) {
   )
 }
 
-function WaitingRoom({socket}) {
+function WaitingRoom({socket, redirect}) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [playerList, setPlayerList] = useState([location.state.playerName]);
   const [isHost, setIsHost] = useState(location.state.isHost);
 
@@ -31,11 +32,11 @@ function WaitingRoom({socket}) {
     socket.on('player-join', (data) => {
       setPlayerList((playerList) => [...playerList, data.playerName]);
     });
-    
+
     socket.on('sent-player-list', (data) => {
       setPlayerList((playerList) => [...data.playerList, ...playerList]);
     });
-    
+
     socket.on('become-host', () => {
       enableHostListeners();
       setIsHost(true);
@@ -48,6 +49,16 @@ function WaitingRoom({socket}) {
       });
     });
 
+    socket.on('start-player', () => {
+      redirect('game-room', navigate,
+          {state: {
+              roomID: location.state.roomID,
+              playerName: location.state.playerName,
+              socketID: socket.id,
+            }}
+      );
+    })
+
     return () => {
       socket.off('sent-player-list');
       socket.off('player-join');
@@ -55,6 +66,12 @@ function WaitingRoom({socket}) {
       socket.off('become-host');
     }
   }, []);
+
+  const startGame = () => {
+    socket.emit('start-game', {
+      roomID: location.state.roomID,
+    });
+  }
 
   const enableHostListeners = () => {
     console.log('became host');
@@ -76,9 +93,9 @@ function WaitingRoom({socket}) {
       <div className="text-7xl mt-12">Room Code: {location.state.roomID}<br/></div>
       <div className="flex flex-row w-[90%]">
         <div className="align-center text-5xl ">Players</div>
-        {isHost && 
+        {isHost &&
           <div className="flex flex-grow justify-end">
-            <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky">Start</button>
+            <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky" onClick={startGame}>Start</button>
           </div>
         }
       </div>

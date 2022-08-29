@@ -7,7 +7,7 @@ const {
     findWords,
     deleteWords,
     updateWords,
-    getRandomWord,
+    getRandomWords,
     getMP3,
     updatePlayerScores,
     createRoom,
@@ -41,10 +41,10 @@ async function getWordArray(chunkSize) {
 connectToDb(async () => {
     db = getDb();
     dbo = db.db('db');
-    // const wordArray = await getWordArray(900);
-    // console.log(wordArray);
-    // await addWords(dbo, wordArray);
-    // await deleteWords(dbo, {});
+    // await getRandomWords(dbo, 2);
+    // await createRoom(dbo, 'Shuby');
+    // await joinRoom(dbo, 'Shuby', 'james');
+    // await getRoom(dbo, 'Shuby');
     console.log('complete');
     db.close();
 })

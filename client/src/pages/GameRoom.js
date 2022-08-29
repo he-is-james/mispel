@@ -15,7 +15,6 @@ function GameRoom() {
 			[player]: new Player(player)
 		}
 	}, {}));
-	// const [players, setPlayers] = useState(location.state.playerList.forEach((player) => players[player] = new Player(player)));
 	console.log(players);
   return (
 		<div className="flex flex-row items-center justify-center bg-sky font-rubikone text-center text-white min-h-screen">

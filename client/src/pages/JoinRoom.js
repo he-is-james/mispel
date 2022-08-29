@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { redirect } from '../utils/routerUtils';
 
-function JoinRoom({socket, redirect}) {
+function JoinRoom({socket}) {
   const location = useLocation();
   const navigate = useNavigate();
 

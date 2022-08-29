@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { redirect } from '../utils/routerUtils';
 import TimeButton from '../components/TimeButton';
 
 
-function CreateRoom({socket, redirect}) {
+function CreateRoom({socket}) {
   const navigate = useNavigate();
   const location = useLocation();
   

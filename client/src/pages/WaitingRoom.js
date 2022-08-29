@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
+import { redirect } from '../utils/routerUtils';
 
 function Name(name, key) {
   return (
@@ -7,7 +8,7 @@ function Name(name, key) {
   )
 }
 
-function WaitingRoom({socket, redirect}) {
+function WaitingRoom({socket}) {
   const location = useLocation();
   const navigate = useNavigate();
   const [playerList, setPlayerList] = useState([location.state.playerName]);
@@ -61,10 +62,7 @@ function WaitingRoom({socket, redirect}) {
     });
 
     return () => {
-      socket.off('sent-player-list');
-      socket.off('player-join');
-      socket.off('sent-player-list');
-      socket.off('become-host');
+      socket.removeAllListeners();
     }
   }, []);
 
@@ -89,7 +87,6 @@ function WaitingRoom({socket, redirect}) {
   const enableHostListeners = () => {
     console.log('became host');
     socket.on('request-player-list', (data) => {
-      console.log('callback executed')
       setPlayerList((playerList) => {
         socket.emit('sent-player-list', {
           requesterID: data.requesterID,

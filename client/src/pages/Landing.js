@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { redirect } from '../utils/routerUtils';
 
-function Landing({socket, redirect}) {
+function Landing({socket}) {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
@@ -43,14 +44,7 @@ function Landing({socket, redirect}) {
     })
 
     return () => {
-      [
-        'room-id-taken',
-        'room-id-available',
-        'room-does-not-exist',
-        'room-does-exist',
-        'name-taken',
-        'name-available'
-      ].forEach((listener) => {socket.off(listener)});
+      socket.removeAllListeners();
     }
   }, []);
 

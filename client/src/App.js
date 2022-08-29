@@ -18,22 +18,19 @@ function App() {
     }, 0); 
     window.onbeforeunload = null; // necessary to prevent infinite loop, that kills your browser 
   }
-  const redirect = (path, navigate, state) => {
-    navigate(`/${path}`, state);
-  }
 
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing socket = {socket} redirect = {redirect}/>} />
-          <Route path="/:roomID" element={<Landing socket = {socket} redirect = {redirect}/>} />
-          <Route path="create-room" element={<CreateRoom socket = {socket} redirect = {redirect}/>} />
-          <Route path="join-room" element={<JoinRoom socket = {socket} redirect = {redirect}/>} />
-          <Route path="waiting-room" element={<WaitingRoom socket = {socket} redirect = {redirect}/> } />
-          <Route path="game-room" element={<GameRoom socket = {socket} redirect = {redirect}/>} />
-          <Route path="leaderboard" element={<Leaderboard socket = {socket} redirect = {redirect}/>} />
-          <Route path="podium" element={<Podium socket = {socket} redirect = {redirect}/>} />
+          <Route path="/" element={<Landing socket = {socket}/>} />
+          <Route path="/:roomID" element={<Landing socket = {socket}/>} />
+          <Route path="create-room" element={<CreateRoom socket = {socket}/>} />
+          <Route path="join-room" element={<JoinRoom socket = {socket}/>} />
+          <Route path="waiting-room" element={<WaitingRoom socket = {socket}/> } />
+          <Route path="game-room" element={<GameRoom socket = {socket}/>} />
+          <Route path="leaderboard" element={<Leaderboard socket = {socket}/>} />
+          <Route path="podium" element={<Podium socket = {socket}/>} />
         </Routes>
       </BrowserRouter>
     </div>

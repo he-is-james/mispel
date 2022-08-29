@@ -2,11 +2,11 @@
 function Standings() {
 
   return (
-    <div className="flex justify-center text-4xl mt-20 mb-auto space-x-12">
+    <div className="flex text-4xl space-x-12">
       <div className="flex basis-1/3 grow">
         <div className="flex flex-col justify-end">
           <label className="">2nd Place</label>
-          <div className="flex bg-silver h-[25rem] w-25 rounded-md"/>
+          <div className="flex-row bg-silver h-[25rem] w-25 rounded-md"/>
           <label>Name1</label>
         </div>
       </div>

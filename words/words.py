@@ -30,12 +30,10 @@ with open("WordList.txt") as f:
   with open("words.json", "r+") as f:
     fd = json.load(f)
     fd['words'] = []
-    counter = 0
     for chunk in chunks(list(words), 420):
+      counter = 0
       for word in chunk:
-        definition = get_definition(word)
-        print(definition)
-        if definition:
+        if (definition := get_definition(word)):
           item = {'word' : word, 'definition': definition}
           fd['words'].append(item)
           counter += 1
@@ -43,5 +41,4 @@ with open("WordList.txt") as f:
       print(f"Chunk finished, wrote {counter} words")
       time.sleep(320)
     json.dump(fd, f)
-
   print(f"We have {total} words")

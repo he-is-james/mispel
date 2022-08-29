@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 function Landing({socket, redirect}) {
+  const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
-  const [usernameForm, setUsernameForm] = useState('');
+  const [usernameForm, setUsernameForm] = useState(location.state ? location.state.playerName : '');
   const [roomIDForm, setRoomIDForm] = useState(params.roomID || '');
   useEffect(() => {
     socket.on('room-id-taken', () => {

@@ -5,7 +5,7 @@ import { redirect } from '../utils/routerUtils';
 import SettingButton from '../components/SettingButton';
 
 
-function CreateRoom({socket, redirect}) {
+function CreateRoom({socket}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,11 +26,11 @@ function CreateRoom({socket, redirect}) {
   }
 
   const handleCreateRoom = () => {
-    redirect('waiting-room', navigate, 
+    redirect('waiting-room', navigate,
       {state: {
         playerName: location.state.playerName,
         isHost: true,
-        roomID: (Math.floor(Math.random() * 100)).toString()
+        roomID: location.state.roomID,
       }}
     );
   }

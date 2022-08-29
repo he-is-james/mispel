@@ -14,11 +14,17 @@ function WaitingRoom({socket}) {
       enableHostListeners();
     }
     else {
+      if (location.state.isHost) {
+      enableHostListeners();
+    }
+    else {
       socket.emit('player-join', {
-        roomID: location.state.roomID,
-        playerName: location.state.playerName,
-        socketID: socket.id,
-      });
+          roomID: location.state.roomID,
+          playerName: location.state.playerName,
+          socketID: socket.id,
+        });
+    }
+
     }
 
     socket.on('player-join', (data) => {
@@ -38,6 +44,7 @@ function WaitingRoom({socket}) {
     });
 
     socket.on('become-host', () => {
+      enableHostListeners();
       enableHostListeners();
       setIsHost(true);
     });
@@ -97,10 +104,12 @@ function WaitingRoom({socket}) {
       <div className="text-6xl mt-8">Room Code: {location.state.roomID}<br/></div>
       <div className="flex flex-row w-[90%]">
         <div className="align-center text-4xl ">Players</div>
-        {isHost && 
+        {isHost &&
+          {isHost && 
           <div className="flex flex-grow justify-end">
-            <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky">Start</button>
-          </div>
+              <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky" onClick={startGame}>Start</button>
+            </div>
+        }
         }
       </div>
       <div className="py-5 w-[90%]"> 

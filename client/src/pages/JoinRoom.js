@@ -1,17 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { redirect } from '../utils/routerUtils';
 
-function JoinRoom({socket, redirect}) {
+function JoinRoom({socket}) {
   const location = useLocation();
   const navigate = useNavigate();
 
   const [roomIDForm, setRoomIDForm] = useState('');  
+  const roomIDRef = useRef(roomIDForm);
   useEffect(() => {
     socket.on('room-exist', () => {
       // TODO: redirect to waiting room
+      // setRoomIDForm((roomID) => {
+      //   redirect('waiting-room', navigate, 
+      //     {state: {
+      //       roomID: roomID,
+      //       playerName: location.state.playerName,
+      //       isHost: false,
+      //     }}
+      //   );
+      // });
       redirect('waiting-room', navigate, 
         {state: {
-          roomID: roomIDForm,
+          roomID: roomIDRef.current,
           playerName: location.state.playerName,
           isHost: false,
         }}
@@ -19,17 +30,19 @@ function JoinRoom({socket, redirect}) {
     })
     socket.on('room-dne', () => {
       // TODO: handle non-existent room
-      alert('room does not exist try again');
+      alert('this room does not exist');
     })
-  })
+  }, []);
 
   const handleJoinRoom = () => {
-    socket.emit('find-room', { name: roomIDForm })
+    socket.emit('find-room', { name: roomIDForm });
   }
 
   const handleChange = (event) => {
     event.preventDefault();
-    setRoomIDForm(event.target.value);
+    const newValue = event.target.value;
+    roomIDRef.current = newValue;
+    setRoomIDForm(newValue);
   }
 
   return (

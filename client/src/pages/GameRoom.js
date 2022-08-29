@@ -1,11 +1,20 @@
 import React from "react";
 import { useState } from "react";
+import { useLocation } from 'react-router-dom';
 import Timer from '../components/Timer';
 import PlayButton from "../components/PlayButton";
+import Player from "../utils/Player";
 
 function GameRoom() {
+	const location = useLocation();
 	const [score, setScore] = useState(0);
-
+	const [players, setPlayers] = useState(location.state.playerList.reduce((playersObj, player) => {
+		return {
+			...playersObj,
+			[player]: new Player(player)
+		}
+	}, {}));
+	console.log(players);
   return (
 		<div className="flex flex-row bg-sky font-rubikone text-center text-white min-h-screen">
 			<div className="flex basis-1/4 grow"/>

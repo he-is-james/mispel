@@ -6,18 +6,12 @@ import GameRoom from './pages/GameRoom'
 import Leaderboard from './pages/Leaderboard'
 import Podium from './pages/Podium'
 import {io} from 'socket.io-client';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // const socket = io('http://localhost:5000');
 function App() {
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:5000`);
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, [setSocket]);
+  const [socket, setSocket] = useState(io(`http://${window.location.hostname}:5000`));
   window.onbeforeunload = function() { 
     window.setTimeout(function () { 
         window.location = '/';

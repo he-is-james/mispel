@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 function Name(name, key) {
@@ -12,13 +12,10 @@ function WaitingRoom({socket, redirect}) {
   const navigate = useNavigate();
   const [playerList, setPlayerList] = useState([location.state.playerName]);
   const [isHost, setIsHost] = useState(location.state.isHost);
+  const playerListRef = useRef(playerList);
 
   useEffect(() => {
     if (location.state.isHost) {
-      socket.emit('host-game', {
-        roomID: location.state.roomID,
-        playerName: location.state.playerName
-      });
       enableHostListeners();
     }
     else {
@@ -30,11 +27,19 @@ function WaitingRoom({socket, redirect}) {
     }
 
     socket.on('player-join', (data) => {
-      setPlayerList((playerList) => [...playerList, data.playerName]);
+      setPlayerList((playerList) => {
+        const newList = [...playerList, data.playerName];
+        playerListRef.current = newList;
+        return newList;
+      });
     });
 
     socket.on('sent-player-list', (data) => {
-      setPlayerList((playerList) => [...data.playerList, ...playerList]);
+      setPlayerList((playerList) => {
+        const newList = [...data.playerList, ...playerList];
+        playerListRef.current = newList;
+        return newList;
+      });
     });
 
     socket.on('become-host', () => {
@@ -45,14 +50,14 @@ function WaitingRoom({socket, redirect}) {
     socket.on('player-left', (data) => {
       console.log(`detected player ${data.playerName} left`);
       setPlayerList((playerList) => {
-        return playerList.filter((x) => x !== data.playerName);
+        const newList = playerList.filter((x) => x !== data.playerName);
+        playerListRef.current = newList;
+        return newList;
       });
     });
 
     socket.on('start-player', () => {
-      setPlayerList((playerList) => {
-        moveToGameRoom(playerList);
-      });
+      moveToGameRoom(playerListRef.current);
     });
 
     return () => {

@@ -24,6 +24,31 @@ router.get('/', (req, res) => {
   // TODO: send leaderboard information
 });
 
+router.get('/room/create-room/:id', (req, res) => {
+  connectToDb(async () => {
+    db = getDb();
+    dbo = db.db('db');
+    // TODO: replace req.params with req.body.name on frontend side
+    await createRoom(dbo, req.params.id);
+    db.close();
+  })
+  const roomId = req.params.id;
+  res.send(`Room ID: ${roomId} created!`);
+})
+
+router.get('/room/join-room/:id/:name', (req, res) => {
+  connectToDb(async () => {
+    db = getDb();
+    dbo = db.db('db');
+    // TODO: replace req.params with req.body.name on frontend side
+    await joinRoom(dbo, req.params.id, req.params.name);
+    db.close();
+  })
+  const roomId = req.params.id;
+  const name = req.params.name
+  res.send(`Room ID: ${roomId} joined by ${name}!`);
+})
+
 // TODO: player joins and it updates database
 // likely switch to post
 router.get('/:id/waiting-room', (req, res) => {

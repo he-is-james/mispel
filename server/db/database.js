@@ -72,7 +72,7 @@ const joinRoom = async (db, roomName, player) => {
     const result = await db.collection("rooms").updateOne(
       {name: roomName},
       addPlayer,
-      false,
+      upsert=false,
     );
     // TODO: error check
     return;

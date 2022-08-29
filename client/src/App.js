@@ -1,41 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
-
-import axios from 'axios';
+import Landing from './pages/Landing';
+import JoinRoom from './pages/JoinRoom';
+import CreateRoom from './pages/CreateRoom'
+import WaitingRoom from './pages/WaitingRoom'
+import GameRoom from './pages/GameRoom'
+import Leaderboard from './pages/Leaderboard'
+import Podium from './pages/Podium'
 import {io} from 'socket.io-client';
+import {useState} from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+// const socket = io('http://localhost:5000');
 function App() {
-  const socket = io('http://localhost:5000');
-  
-  const handleClick = () => {
-    // the blob and audio step only have to be done once 
-    // maybe memoize like streams
-    axios.get('http://localhost:5000/api/getSound').then((res) => {
-      console.log(res);
-      const blob =  new Blob([new Uint8Array(res.data.buffer.data)], {type: 'audio/wav'})
-      const audio = new Audio(URL.createObjectURL(blob));
-      audio.play()
-    });
+  const [socket, setSocket] = useState(io(`http://${window.location.hostname}:5000`));
+  window.onbeforeunload = function() { 
+    window.setTimeout(function () { 
+        window.location = '/';
+    }, 0); 
+    window.onbeforeunload = null; // necessary to prevent infinite loop, that kills your browser 
   }
 
-  const connect = () => {
-    socket.on("connect", () => {
-      console.log(socket.id);
-    })
-  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-
-        <button onClick={connect}>
-          Play Sound
-        </button>
-        
-      </header>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Landing socket = {socket}/>} />
+          <Route path="/:roomID" element={<Landing socket = {socket}/>} />
+          <Route path="create-room" element={<CreateRoom socket = {socket}/>} />
+          <Route path="join-room" element={<JoinRoom socket = {socket}/>} />
+          <Route path="waiting-room" element={<WaitingRoom socket = {socket}/> } />
+          <Route path="game-room" element={<GameRoom socket = {socket}/>} />
+          <Route path="leaderboard" element={<Leaderboard socket = {socket}/>} />
+          <Route path="podium" element={<Podium socket = {socket}/>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

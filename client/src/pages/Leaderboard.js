@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Options from '../components/Options';
 import LeaderboardList from '../components/LeaderboardList';
 
 function Leaderboard() {
@@ -11,7 +10,7 @@ function Leaderboard() {
 		}
 	}
 
-	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55)]);
+	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2)]);
 
 	return (
 		<div className="flex flex-col items-center bg-navy font-rubikone text-center text-white min-h-screen">
@@ -27,7 +26,6 @@ function Leaderboard() {
 			</div>
 			<LeaderboardList playerList={playerList}/>
 			<div className="flex mt-auto mb-12 w-[90%]">
-				<Options/>
 				<div className="flex grow justify-end">
 					<button className="bg-yellow text-4xl p-4 rounded-md hover:bg-orange">Finish Game</button>
 				</div>

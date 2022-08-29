@@ -50,14 +50,10 @@ function WaitingRoom({socket, redirect}) {
     });
 
     socket.on('start-player', () => {
-      redirect('game-room', navigate,
-          {state: {
-              roomID: location.state.roomID,
-              playerName: location.state.playerName,
-              socketID: socket.id,
-            }}
-      );
-    })
+      setPlayerList((playerList) => {
+        moveToGameRoom(playerList);
+      });
+    });
 
     return () => {
       socket.off('sent-player-list');
@@ -67,10 +63,22 @@ function WaitingRoom({socket, redirect}) {
     }
   }, []);
 
+  const moveToGameRoom = (playerList) => {
+    redirect('game-room', navigate,
+      {state: {
+        roomID: location.state.roomID,
+        playerName: location.state.playerName,
+        playerList: playerList,
+        socketID: socket.id,
+      }}
+    );
+  }
+
   const startGame = () => {
     socket.emit('start-game', {
       roomID: location.state.roomID,
     });
+    moveToGameRoom(playerList);
   }
 
   const enableHostListeners = () => {

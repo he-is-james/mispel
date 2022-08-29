@@ -9,7 +9,13 @@ import Player from "../utils/Player";
 function GameRoom() {
 	const location = useLocation();
 	const [score, setScore] = useState(0);
-	const [players, setPlayers] = useState(location.state.players.map((player) => new Player(player)));
+	const [players, setPlayers] = useState(location.state.playerList.reduce((playersObj, player) => {
+		return {
+			...playersObj,
+			[player]: new Player(player)
+		}
+	}, {}));
+	// const [players, setPlayers] = useState(location.state.playerList.forEach((player) => players[player] = new Player(player)));
 	console.log(players);
   return (
 		<div className="flex flex-row items-center justify-center bg-sky font-rubikone text-center text-white min-h-screen">

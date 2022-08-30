@@ -5,7 +5,7 @@ function Timer() {
     <div className="flex flex-col items-center text-4xl">
       <label className="text-3xl">Timer</label>
       <div>
-        <TimelapseIcon className="scale-[8] mt-20 mb-20"/>
+        <TimelapseIcon className="scale-[6] mt-20 mb-20"/>
       </div>
     </div>
   );

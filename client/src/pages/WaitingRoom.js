@@ -2,12 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import { redirect } from '../utils/routerUtils';
 
-function Name(name, key) {
-  return (
-    <div className="text-3xl font-rubikone text-center mt-4" key={key}>{name}</div>
-  )
-}
-
 function WaitingRoom({socket}) {
   const location = useLocation();
   const navigate = useNavigate();

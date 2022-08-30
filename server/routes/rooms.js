@@ -24,28 +24,28 @@ router.get('/', (req, res) => {
   // TODO: send leaderboard information
 });
 
-router.get('/room/create-room/:id', (req, res) => {
+router.post('/room/create-room', (req, res) => {
   connectToDb(async () => {
     db = getDb();
     dbo = db.db('db');
-    // TODO: replace req.params with req.body.name on frontend side
-    await createRoom(dbo, req.params.id);
+    await createRoom(dbo, req.body.roomID, req.body.hostName);
     db.close();
-  })
-  const roomId = req.params.id;
-  res.send(`Room ID: ${roomId} created!`);
+  });
+  const roomID = req.body.roomID;
+  const name = req.body.hostName;
+  res.send(`Room ID: ${roomID} created by ${name}!`);
 })
 
-router.get('/room/join-room/:id/:name', (req, res) => {
+router.post('/room/join-room', (req, res) => {
   connectToDb(async () => {
     db = getDb();
     dbo = db.db('db');
-    // TODO: replace req.params with req.body.name on frontend side
-    await joinRoom(dbo, req.params.id, req.params.name);
+    await joinRoom(dbo, req.body.roomID, req.body.playerName);
     db.close();
-  })
-  const roomId = req.params.id;
-  const name = req.params.name
+  });
+  const roomId = req.body.roomID;
+  const name = req.body.playerName;
+  console.log(`Room ID: ${roomId} joined by ${name}!`)
   res.send(`Room ID: ${roomId} joined by ${name}!`);
 })
 
@@ -61,6 +61,8 @@ router.get('/:id/game-room', (req, res) => {
   const roomId = req.params.id;
   res.send(`Room ID: ${roomId}!`);
 });
+
+// TODO: make delete room functionality
 
 // router.get("/api/getSound", (req, res) => {
 //   connectToDb(async () => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SettingButton from '../components/SettingButton';
 import { redirect } from '../utils/routerUtils';
-import TimeButton from '../components/TimeButton';
+import Timer from '../components/Timer';
 
 
 function CreateRoom({socket}) {

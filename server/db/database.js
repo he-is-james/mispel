@@ -42,13 +42,14 @@ const getMP3 = async (db) => {
 // ==========================================================================
 
 // Creates room in database containing room, user, and word info
-const createRoom = async (db, roomName) => {
-    const wordsArray = await getRandomWords(db, 15)
+const createRoom = async (db, roomName, hostName) => {
+    const wordsArray = await getRandomWords(db, 15);
+    const host = {};
+    host[hostName] = 0
     const newRoom = {
-        name: roomName,
-        players: {
+        roomID: roomName,
+        players: host,
             // playerName: 0
-        },
         currentWordPosition: 0,
         words: wordsArray,
             // [{ word: "restaurant", definition: "a place that people go to eat", audio: Binary},
@@ -60,7 +61,7 @@ const createRoom = async (db, roomName) => {
             // ...
         ],
         time: 15,
-    }
+    };
     await db.collection("rooms").insertOne(newRoom);
 } 
 
@@ -70,7 +71,7 @@ const joinRoom = async (db, roomName, player) => {
     const addPlayer = { '$set' : {} };
     addPlayer['$set'][players] = 0;
     const result = await db.collection("rooms").updateOne(
-      {name: roomName},
+      {roomID: roomName},
       addPlayer,
       upsert=false,
     );
@@ -78,12 +79,14 @@ const joinRoom = async (db, roomName, player) => {
     return;
 }
 
-// update room function with settings
+// TODO: update room function with settings
+
+// TODO: make delete room functionality
 
 const getRoom = async (db, roomName) => {
     const result = await db.collection("rooms").find(
       {
-        name: roomName
+        roomID: roomName
       }
     ).toArray();
     console.log(result[0].players)
@@ -102,7 +105,7 @@ const getRoom = async (db, roomName) => {
 // TODO: update with recent
 const updatePlayerScores = async (db, roomName, playerName, score) => {
     await db.collection("rooms").updateOne(
-        {name: roomName},
+        {roomID: roomName},
         {
             $set: {players: {$elemMatch:{name: playerName, score: score}}}
         }

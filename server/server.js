@@ -4,6 +4,7 @@ const { Server } = require('socket.io');
 
 const app = express();
 const httpServer = createServer(app);
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const port = 5000;
 const io = new Server(httpServer, {
@@ -13,6 +14,7 @@ const io = new Server(httpServer, {
 })
 
 app.use(cors());
+app.use(bodyParser.json());
 app.use(require('./routes/rooms'));
 
 io.on('connection', (socket) => {

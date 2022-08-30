@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { redirect } from '../utils/routerUtils';
 import TimeButton from '../components/TimeButton';
 
 
-function CreateRoom({socket, redirect}) {
+function CreateRoom({socket}) {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  useEffect(() => {
+    socket.emit('host-game', {
+      roomID: location.state.roomID,
+      playerName: location.state.playerName
+    });
+  }, []);
+
   const handleBackButton = () => {
+    socket.emit('leave-room', location.state.roomID);
     redirect('', navigate,
       {state: {
         playerName: location.state.playerName,
@@ -18,7 +28,7 @@ function CreateRoom({socket, redirect}) {
       {state: {
         playerName: location.state.playerName,
         isHost: true,
-        roomID: (Math.floor(Math.random() * 100)).toString()
+        roomID: location.state.roomID,
       }}
     );
   }

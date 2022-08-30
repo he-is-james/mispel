@@ -104,19 +104,24 @@ function WaitingRoom({socket}) {
       <div className="text-6xl mt-8">Room Code: {location.state.roomID}<br/></div>
       <div className="flex flex-row w-[90%]">
         <div className="align-center text-4xl ">Players</div>
-        {isHost &&
-          {isHost && 
-          <div className="flex flex-grow justify-end">
-              <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky" onClick={startGame}>Start</button>
-            </div>
-        }
+        {isHost && 
+        <div className="flex flex-grow justify-end">
+            <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky" onClick={startGame}>Start</button>
+          </div>
         }
       </div>
       <div className="py-5 w-[90%]"> 
         <div className="border-t border-2 border-white"/>
       </div>
-      <div className="grid grid-cols-3 w-full mt-8 text-3xl mt-4">
-        {playerList.map((name) => (<div>{name}</div>))}
+      <div className="grid grid-cols-3 w-full mt-8 text-3xl">
+        {playerList.map((name, key) => {
+              return (
+                <div>
+                  <div key={key}>{name}</div>
+                  {isHost && <button> Kick </button>} 
+                </div>
+              )
+            })}
       </div>
     </div>
   );

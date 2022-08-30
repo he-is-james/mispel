@@ -68,7 +68,7 @@ function CreateRoom({socket}) {
         </div>
       </div>
       <div className="flex flex-row space-x-6 mb-12 ml-16 mr-16 items-start">
-        <button onClick={handleBackButton} className="bg-orange text-4xl py-2 px-7 mt-20 ml-20 rounded-md hover:bg-sky">Back</button>
+        <button onClick={handleBackButton} className="bg-orange text-4xl py-2 px-7 ml-20 rounded-md hover:bg-sky">Back</button>
         <div className="flex grow justify-end">
           <button onClick = {handleCreateRoom} className="bg-orange text-4xl py-2 px-7 rounded-md hover:bg-sky">Create Room</button>
         </div>

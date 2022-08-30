@@ -10,7 +10,7 @@ function Leaderboard() {
 		}
 	}
 
-	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2)]);
+	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2), new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2)]);
 
 	return (
 		<div className="flex flex-col items-center bg-navy font-rubikone text-center text-white min-h-screen">
@@ -24,7 +24,9 @@ function Leaderboard() {
 			<div className="py-5 w-[90%]"> 
 				<div className="border-t border-2 border-white"/>
 			</div>
-			<LeaderboardList playerList={playerList}/>
+			<div className="basis-y-2/3 w-[90%]">
+				<LeaderboardList playerList={playerList}/>
+			</div>
 			<div className="flex mt-auto mb-12 w-[90%]">
 				<div className="flex grow justify-end">
 					<button className="bg-yellow text-4xl p-4 rounded-md hover:bg-orange">Finish Game</button>

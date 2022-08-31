@@ -8,6 +8,7 @@ function Landing({socket}) {
   const params = useParams();
   const [usernameForm, setUsernameForm] = useState(location.state ? location.state.playerName : '');
   const [roomIDForm, setRoomIDForm] = useState(params.roomID || '');
+  
   useEffect(() => {
     socket.on('room-id-taken', () => {
       alert('room id taken');
@@ -49,11 +50,12 @@ function Landing({socket}) {
   }, []);
 
   const onJoin = () => {
-    // redirect('join-room', navigate, 
-    //   {state: {
-    //     playerName: usernameForm,
-    //   }}
-    // );
+    redirect('waiting-room', navigate, 
+      {state: {
+        playerName: usernameForm,
+        roomID: roomIDForm,
+      }}
+    );
     socket.emit('does-room-exist', {
       roomID: roomIDForm,
       playerName: usernameForm,
@@ -62,11 +64,11 @@ function Landing({socket}) {
   }
 
   const onCreate = () => {
-    // redirect('create-room', navigate, 
-    //   {state: {
-    //     playerName: usernameForm,
-    //   }}
-    // );
+    redirect('create-room', navigate, 
+      {state: {
+        playerName: usernameForm,
+      }}
+    );
     socket.emit('does-room-exist', {
       roomID: roomIDForm,
       playerName: usernameForm,

@@ -11,7 +11,7 @@ function LeaderboardList(props) {
   }
 
   return (
-    <div className="flex-col space-y-3 overflow-y-scroll">
+    <div className="flex-col max-h-[40rem] space-y-3 overflow-y-scroll">
       {props.playerList.map( player => createPlayerCard(player.name, player.score) )}
     </div>
   );

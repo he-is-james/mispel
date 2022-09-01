@@ -33,7 +33,7 @@ with open("WordList.txt") as f:
     for chunk in chunks(list(words), 420):
       counter = 0
       for word in chunk:
-        if (definition := get_definition(word)):
+        if definition := get_definition(word):
           item = {'word' : word, 'definition': definition}
           fd['words'].append(item)
           counter += 1

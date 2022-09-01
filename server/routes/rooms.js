@@ -1,21 +1,19 @@
 const express = require('express');
-const {MongoClient} = require("mongodb");
-const {connectToDb, getDb} = require('../db/conn');
-const {getSpeech} = require('../db/textToSpeech');
-//database operations
+const { MongoClient } = require('mongodb');
+const { connectToDb, getDb } = require('../db/conn');
+const { getSpeech } = require('../db/textToSpeech');
+// database operations
 const {
-    addWords,
-    findWords,
-    deleteWords,
-    updateWords,
-    getRandomWords,
-    getMP3,
-    createRoom,
-    joinRoom,
-    getRoom,
+  addWords,
+  findWords,
+  deleteWords,
+  updateWords,
+  getRandomWords,
+  getMP3,
+  createRoom,
+  joinRoom,
+  getRoom,
 } = require('../db/database');
-
-
 
 const router = express.Router();
 
@@ -31,10 +29,10 @@ router.post('/room/create-room', (req, res) => {
     await createRoom(dbo, req.body.roomID, req.body.hostName);
     db.close();
   });
-  const roomID = req.body.roomID;
+  const { roomID } = req.body;
   const name = req.body.hostName;
   res.send(`Room ID: ${roomID} created by ${name}!`);
-})
+});
 
 router.post('/room/join-room', (req, res) => {
   connectToDb(async () => {
@@ -45,9 +43,9 @@ router.post('/room/join-room', (req, res) => {
   });
   const roomId = req.body.roomID;
   const name = req.body.playerName;
-  console.log(`Room ID: ${roomId} joined by ${name}!`)
+  console.log(`Room ID: ${roomId} joined by ${name}!`);
   res.send(`Room ID: ${roomId} joined by ${name}!`);
-})
+});
 
 // TODO: player joins and it updates database
 // likely switch to post
@@ -56,7 +54,7 @@ router.get('/:id/waiting-room', (req, res) => {
   res.send(`Room ID: ${roomId} waiting!`);
 });
 
-// TODO: 
+// TODO:
 router.get('/:id/game-room', (req, res) => {
   const roomId = req.params.id;
   res.send(`Room ID: ${roomId}!`);

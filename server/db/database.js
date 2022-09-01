@@ -1,10 +1,8 @@
 const {ObjectId} = require("mongodb");
 const fs = require('fs');
 
-// TODO: do check that there can't be sql injections
-
-// ==========================================================================
 // Important functions for adjusting words in database collection
+// ==========================================================================
 const addWords = async (db, toInsert) => {
     const result =  await db.collection("words").insertMany(toInsert);
     console.log(`${result.insertedCount} new words added with ids: `);
@@ -41,11 +39,16 @@ const getMP3 = async (db) => {
 }
 // ==========================================================================
 
+
+// Important functions for rooms data
+// ==========================================================================
 // Creates room in database containing room, user, and word info
+// TODO: do check that there can't be sql injections
 const createRoom = async (db, roomName, hostName) => {
-    const wordsArray = await getRandomWords(db, 15);
     const host = {};
-    host[hostName] = 0
+    host[hostName] = 0;
+    const wordsArray = await getRandomWords(db, 15);
+    // New room structure when added to the database
     const newRoom = {
         roomID: roomName,
         players: host,
@@ -62,26 +65,81 @@ const createRoom = async (db, roomName, hostName) => {
         ],
         time: 15,
     };
-    await db.collection("rooms").insertOne(newRoom);
+    try {
+        await db.collection("rooms").insertOne(newRoom);
+    } catch (err) {
+        console.error(err);
+    }
 } 
 
 // Adds player to players object in database to initialize scores
+// TODO: do check that there can't be sql injections
 const joinRoom = async (db, roomName, player) => {
     const players = 'players.' + player;
     const addPlayer = { '$set' : {} };
+    // Sets new player's score to 0
     addPlayer['$set'][players] = 0;
-    const result = await db.collection("rooms").updateOne(
-      {roomID: roomName},
-      addPlayer,
-      upsert=false,
-    );
-    // TODO: error check
-    return;
+    try {
+        await db.collection("rooms").updateOne(
+            { roomID: roomName },
+            addPlayer,
+            upsert=false,
+        );
+    } catch (err) {
+        console.error(err);
+    }
 }
 
-// TODO: update room function with settings
+// Updates room settings for words
+const updateRoomSettings = async (db, roomName, newWordsCount, newTimeLimit) => {
+    const newWordsArray = await getRandomWords(db, newWordsCount);
+    try {
+        await db.collection("rooms").updateOne(
+            { roomID: roomName },
+            { 
+                $set: {
+                    words: newWordsArray,
+                    time: newTimeLimit,
+                }
+            },
+            upsert=false,
+        );
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-// TODO: make delete room functionality
+// Updates the room scores and misspellings 
+const updateRoomGame = async (db, roomName, updatedPlayersScores, attemptsCounts) => {
+    try {
+        await db.collection("rooms").updateOne(
+            { roomID: roomName },
+            {
+                $set: {
+                    players: updatedPlayersScores,
+                },
+                $inc: {
+                    currentWordPosition: 1,
+                },
+                $push: {
+                    attempts: attemptsCounts,
+                },
+            },
+            upsert=false,
+        );
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Deletes rooms from the database
+const deleteRoom = async (db, roomName) => {
+    try {
+        await db.collection("rooms").deleteOne({ roomID: roomName });
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 const getRoom = async (db, roomName) => {
     const result = await db.collection("rooms").find(
@@ -92,25 +150,22 @@ const getRoom = async (db, roomName) => {
     console.log(result[0].players)
     // TODO: error check
   }
+// ==========================================================================
 
-  const getRandomWords = async (db, number) => {
+
+// Important helper functions
+// ==========================================================================
+// Randomly selects specific number of words from database's word list to use for the game rooms
+const getRandomWords = async (db, number) => {
     var cursor = (db.collection("words").aggregate([{ $sample: { size: number } }]));
-    const words = (await cursor.toArray())
+    // Creates array of size 'number'
+    const words = (await cursor.toArray());
     words.forEach((word) => {
         delete word._id;
     })
     return words;
 }
-
-// TODO: update with recent
-const updatePlayerScores = async (db, roomName, playerName, score) => {
-    await db.collection("rooms").updateOne(
-        {roomID: roomName},
-        {
-            $set: {players: {$elemMatch:{name: playerName, score: score}}}
-        }
-    )
-}
+// ==========================================================================
 
 module.exports = {
     addWords,
@@ -119,8 +174,10 @@ module.exports = {
     updateWords,
     getRandomWords,
     getMP3,
-    updatePlayerScores,
     createRoom,
     joinRoom,
+    updateRoomSettings,
+    updateRoomGame,
+    deleteRoom,
     getRoom,
 }

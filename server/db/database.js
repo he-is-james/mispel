@@ -159,16 +159,19 @@ const deleteRoom = async (db, roomName) => {
     }
 }
 
-// Gets the room info for word count, words array, and time limit
-const getRoom = async (db, roomName) => {
-    const result = await db.collection("rooms").find(
-      {
-        roomID: roomName
-      }
-    ).toArray();
-    console.log(result[0].players)
-    // TODO: error check
-  }
+// Gets the room's words array
+const getRoomWords = async (db, roomName) => {
+    try {
+        const result = await db.collection("rooms").find(
+            {
+              roomID: roomName
+            }
+        ).toArray();
+        return result[0].words;
+    } catch (err) {
+        console.error(err);
+    }
+}
 // ==========================================================================
 
 
@@ -198,5 +201,5 @@ module.exports = {
     updateRoomSettings,
     updateRoomGame,
     deleteRoom,
-    getRoom,
+    getRoomWords,
 }

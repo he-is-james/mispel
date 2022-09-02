@@ -12,9 +12,10 @@ const {
     getMP3,
     createRoom,
     joinRoom,
-    getRoom,
+    getRoomWords,
     updateRoomSettings,
     updateRoomGame,
+    deleteRoom,
 } = require('../db/database');
 
 
@@ -72,19 +73,29 @@ router.post('/room/update-room-game', (req, res) => {
   res.send(`Room ID: ${roomId} game updated!`);
 });
 
-// likely switch to post
-router.get('/:id/waiting-room', (req, res) => {
+router.get('/room/words', (req, res) => {
+  let result;
+  connectToDb(async () => {
+    const db = getDb();
+    dbo = db.db('db');
+    result = await getRoomWords(dbo, req.body.roomID);
+    db.close();
+  });
   const roomId = req.params.id;
-  res.send(`Room ID: ${roomId} waiting!`);
+  res.send(`Room ID: ${roomId} words!`);
+  return result;
 });
 
-// TODO: 
-router.get('/:id/game-room', (req, res) => {
+router.delete('/room/delete-room', (req, res) => {
+  connectToDb(async () => {
+    const db = getDb();
+    dbo = db.db('db');
+    await deleteRoom(dbo, req.body.roomID);
+    db.close();
+  });
   const roomId = req.params.id;
-  res.send(`Room ID: ${roomId}!`);
+  res.send(`Room ID: ${roomId} is deleted!`);
 });
-
-// TODO: make delete room functionality
 
 // router.get("/api/getSound", (req, res) => {
 //   connectToDb(async () => {

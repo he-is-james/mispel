@@ -14,7 +14,7 @@ const {
   updateRoomSettings,
   updateRoomGame,
   deleteRoom,
-  getRoom,
+  getRoomWords,
 } = require('./database');
 
 const wordJSON = require("../../words/words.json");
@@ -45,6 +45,8 @@ connectToDb(async () => {
     // await joinRoom(dbo, 'Shuby', 'sunny'); 
     // await updateRoomSettings(dbo, 'Shuby', -1, 20);
     // await updateRoomGame(dbo, 'Shuby', {james: 10, sunny: 20}, {'resternat': 2, 'resatreant': 1})
+    // const result = await getRoomWords(dbo, 'Shuby');
+    // console.log(result);
     console.log('complete');
     db.close();
 })

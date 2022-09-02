@@ -54,6 +54,7 @@ const createRoom = async (db, roomName, hostName) => {
         players: host,
             // playerName: 0
         currentWordPosition: 0,
+        wordCount: 15,
         words: wordsArray,
             // [{ word: "restaurant", definition: "a place that people go to eat", audio: Binary},
             // { word: "reliable", definition: "adjective describing someone as dependable", audio: Binary},
@@ -63,7 +64,7 @@ const createRoom = async (db, roomName, hostName) => {
             // {"relable": 5, "realable": 2},
             // ...
         ],
-        time: 15,
+        timeLimit: 15,
     };
     try {
         await db.collection("rooms").insertOne(newRoom);
@@ -92,18 +93,32 @@ const joinRoom = async (db, roomName, player) => {
 
 // Updates room settings for words
 const updateRoomSettings = async (db, roomName, newWordsCount, newTimeLimit) => {
-    const newWordsArray = await getRandomWords(db, newWordsCount);
     try {
-        await db.collection("rooms").updateOne(
-            { roomID: roomName },
-            { 
-                $set: {
-                    words: newWordsArray,
-                    time: newTimeLimit,
-                }
-            },
-            upsert=false,
-        );
+        // wordCount, words array, and timeLimit are updated if the passed in numbers are not -1
+        if (newWordsCount != -1) {
+            const newWordsArray = await getRandomWords(db, newWordsCount);
+            await db.collection("rooms").updateOne(
+                { roomID: roomName },
+                { 
+                    $set: {
+                        wordCount: newWordsCount,
+                        words: newWordsArray,
+                    }
+                },
+                upsert=false,
+            );
+        }
+        if (newTimeLimit != -1) {
+            await db.collection("rooms").updateOne(
+                { roomID: roomName },
+                { 
+                    $set: {
+                        timeLimit: newTimeLimit,
+                    }
+                },
+                upsert=false,
+            );
+        }
     } catch (err) {
         console.error(err);
     }
@@ -115,12 +130,15 @@ const updateRoomGame = async (db, roomName, updatedPlayersScores, attemptsCounts
         await db.collection("rooms").updateOne(
             { roomID: roomName },
             {
+                // Replace with the updated player scores constructed from Sockets
                 $set: {
                     players: updatedPlayersScores,
                 },
+                // Move to the next word position
                 $inc: {
                     currentWordPosition: 1,
                 },
+                // Add new dictionary of misspellings to array of attempts
                 $push: {
                     attempts: attemptsCounts,
                 },
@@ -141,6 +159,7 @@ const deleteRoom = async (db, roomName) => {
     }
 }
 
+// Gets the room info for word count, words array, and time limit
 const getRoom = async (db, roomName) => {
     const result = await db.collection("rooms").find(
       {

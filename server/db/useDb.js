@@ -40,13 +40,11 @@ async function getWordArray(chunkSize) {
 connectToDb(async () => {
     db = getDb();
     dbo = db.db('db');
-    // await getRandomWords(dbo, 2);
-    // await createRoom(dbo, 'Shuby');
-    // await joinRoom(dbo, 'Shuby', 'james'); 
-    // await getRoom(dbo, 'Shuby');
-    // await updateRoomSettings(dbo, 'rip', 10, 10);
-    // await updateRoomGame(dbo, 'rip', { 'james': 20, 'sunny': 10});
-    // await deleteRoom(dbo, 'rip');
+    // await deleteRoom(dbo, 'Shuby');
+    // await createRoom(dbo, 'Shuby', 'james');
+    // await joinRoom(dbo, 'Shuby', 'sunny'); 
+    // await updateRoomSettings(dbo, 'Shuby', -1, 20);
+    // await updateRoomGame(dbo, 'Shuby', {james: 10, sunny: 20}, {'resternat': 2, 'resatreant': 1})
     console.log('complete');
     db.close();
 })

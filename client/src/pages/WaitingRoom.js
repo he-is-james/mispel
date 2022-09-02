@@ -110,7 +110,6 @@ function WaitingRoom({socket}) {
     })
   }
 
-
   return (
     <div className="flex flex-col items-center bg-yellow font-rubikone text-center text-white min-h-screen">
       <div className=" mt-12 text-7xl">Mispel</div>
@@ -123,14 +122,14 @@ function WaitingRoom({socket}) {
           </div>
         }
       </div>
-      <div className="grid grid-cols-3 w-full mt-8">
+      <div className="grid grid-cols-3 w-full mt-8 text-3xl">
         {playerList.map((name, key) => {
           return (
             <>
-            <span>
-            <div className="text-3xl font-rubikone text-center mt-4" key={key}>{name}</div>
+            <span className="group">
+            <div className="text-center mt-4 group-hover:block" key={key}>{name}</div>
             {isHost && name !== location.state.playerName && 
-              <button onClick ={() => kickPlayer(name)} className='bg-red-600'> Kick </button> } 
+            <button onClick ={() => kickPlayer(name)} className='bg-red-600 py-1 px-2 rounded opacity-0 group-hover:opacity-100'> Kick </button>}
             </span>
             </>
           )

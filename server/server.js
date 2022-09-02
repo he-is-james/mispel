@@ -70,6 +70,15 @@ io.on('connection', (socket) => {
     socket.to(roomID).emit('player-join', {playerName: playerName});
   })
 
+  socket.on('player-kick', (data) => {
+    io.in(data.roomID).fetchSockets().then(sockets => {
+      const toKick = sockets.find(socket => socket.playerName === data.playerName)
+      io.in(data.roomID).emit('player-left', {playerName: data.playerName})
+      toKick.leave()
+      console.log(`Player ${data.playerName} kicked from ${data.roomID}`)
+    })
+  })
+  
   socket.on('start-game', (data) => {
     socket.to(data.roomID).emit('start-player');
   })

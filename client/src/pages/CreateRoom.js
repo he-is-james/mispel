@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SettingButton from '../components/SettingButton';
@@ -8,7 +9,7 @@ import Timer from '../components/Timer';
 function CreateRoom({socket}) {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   useEffect(() => {
     socket.emit('host-game', {
       roomID: location.state.roomID,
@@ -24,6 +25,7 @@ function CreateRoom({socket}) {
       }}
     );
   }
+
   const handleCreateRoom = () => {
     redirect('waiting-room', navigate,
       {state: {
@@ -62,12 +64,12 @@ function CreateRoom({socket}) {
           <div className="flex-row">
             {rounds.map((roundNumber, index) => <SettingButton text={roundNumber} active={round===index} onClick={() => setRound(index)}/>)}
             <button onClick={handleCustom} className="py-2 px-2 rounded-sm hover:bg-sky">Custom</button>
-              {isCustom ? <input type="numbers" name="name" className="text-3xl text-center bg-gray-400 ml-2 w-24 h-12 rounded-md focus:outline-none"/>: <></>}
+              {isCustom ? <input type="numbers" className="text-3xl text-center bg-gray-400 ml-2 w-24 h-12 rounded-md focus:outline-none"/>: <></>}
           </div>
         </div>
       </div>
       <div className="flex flex-row space-x-6 mb-12 ml-16 mr-16 items-start">
-        <button className="bg-orange text-4xl py-2 px-7 rounded-md hover:bg-sky">Back</button>
+        <button onClick={handleBackButton} className="bg-orange text-4xl py-2 px-7 ml-20 rounded-md hover:bg-sky">Back</button>
         <div className="flex grow justify-end">
           <button onClick = {handleCreateRoom} className="bg-orange text-4xl py-2 px-7 rounded-md hover:bg-sky">Create Room</button>
         </div>

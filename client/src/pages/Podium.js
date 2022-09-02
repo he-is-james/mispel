@@ -2,11 +2,13 @@ import { useState } from "react";
 import Standings from '../components/Standings';
 
 function Podium() {
+	const [playerScore, setPlayerScore] = useState(0)
+
 	return (
 		<div className="flex flex-col items-center justify-center bg-orange font-rubikone text-center text-white min-h-screen">
 			<div className="text-5xl mt-12">Mispel</div>
 			<div className="text-7xl mt-8">Congratulations!</div>
-			<div className="flex mb-auto w-[50%] justify-center">
+			<div className="flex grow flex-col justify-center">
 				<Standings />
 			</div>
 			<div className="flex flex-row items-center flex-nowrap justify-content mt-auto mb-12 w-[90%] mt-12">

@@ -12,7 +12,10 @@ const {
     getMP3,
     createRoom,
     joinRoom,
-    getRoom,
+    getRoomWords,
+    updateRoomSettings,
+    updateRoomGame,
+    deleteRoom,
 } = require('../db/database');
 
 
@@ -26,7 +29,7 @@ router.get('/', (req, res) => {
 
 router.post('/room/create-room', (req, res) => {
   connectToDb(async () => {
-    db = getDb();
+    const db = getDb();
     dbo = db.db('db');
     await createRoom(dbo, req.body.roomID, req.body.hostName);
     db.close();
@@ -34,35 +37,65 @@ router.post('/room/create-room', (req, res) => {
   const roomID = req.body.roomID;
   const name = req.body.hostName;
   res.send(`Room ID: ${roomID} created by ${name}!`);
-})
+});
 
 router.post('/room/join-room', (req, res) => {
   connectToDb(async () => {
-    db = getDb();
+    const db = getDb();
     dbo = db.db('db');
     await joinRoom(dbo, req.body.roomID, req.body.playerName);
     db.close();
   });
   const roomId = req.body.roomID;
   const name = req.body.playerName;
-  console.log(`Room ID: ${roomId} joined by ${name}!`)
   res.send(`Room ID: ${roomId} joined by ${name}!`);
-})
-
-// TODO: player joins and it updates database
-// likely switch to post
-router.get('/:id/waiting-room', (req, res) => {
-  const roomId = req.params.id;
-  res.send(`Room ID: ${roomId} waiting!`);
 });
 
-// TODO: 
-router.get('/:id/game-room', (req, res) => {
-  const roomId = req.params.id;
-  res.send(`Room ID: ${roomId}!`);
+router.post('/room/update-room-settings', (req, res) => {
+  connectToDb(async () => {
+    const db = getDb();
+    dbo = db.db('db');
+    await updateRoomSettings(dbo, req.body.roomID, req.body.wordsCount, req.body.timeLimit);
+    db.close();
+  });
+  const roomId = req.body.roomID;
+  res.send(`Room ID: ${roomId} settings updated!`);
 });
 
-// TODO: make delete room functionality
+router.post('/room/update-room-game', (req, res) => {
+  connectToDb(async () => {
+    const db = getDb();
+    dbo = db.db('db');
+    await updateRoomGame(dbo, req.body.roomID, req.body.playerScores, req.body.wordAttempts);
+    db.close();
+  });
+  const roomId = req.body.roomID;
+  res.send(`Room ID: ${roomId} game updated!`);
+});
+
+router.get('/room/words', (req, res) => {
+  let result;
+  connectToDb(async () => {
+    const db = getDb();
+    dbo = db.db('db');
+    result = await getRoomWords(dbo, req.body.roomID);
+    db.close();
+  });
+  const roomId = req.params.id;
+  res.send(`Room ID: ${roomId} words!`);
+  return result;
+});
+
+router.delete('/room/delete-room', (req, res) => {
+  connectToDb(async () => {
+    const db = getDb();
+    dbo = db.db('db');
+    await deleteRoom(dbo, req.body.roomID);
+    db.close();
+  });
+  const roomId = req.params.id;
+  res.send(`Room ID: ${roomId} is deleted!`);
+});
 
 // router.get("/api/getSound", (req, res) => {
 //   connectToDb(async () => {

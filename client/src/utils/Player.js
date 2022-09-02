@@ -4,7 +4,7 @@ class Player {
     this._score = 0;
     this._attempts = {}; // ex: {'restarant': 2, 'rstanrt': 3, 'restaurnt': 1}
   }
-  
+
   get name() {
     return this._name;
   }

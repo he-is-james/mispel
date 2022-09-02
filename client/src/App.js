@@ -6,18 +6,31 @@ import GameRoom from './pages/GameRoom'
 import Leaderboard from './pages/Leaderboard'
 import Podium from './pages/Podium'
 import {io} from 'socket.io-client';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // const socket = io('http://localhost:5000');
 function App() {
-  const [socket, setSocket] = useState(io(`http://${window.location.hostname}:5000`));
+  const [socket, setSocket] = useState(io(`http://${window.location.hostname}:5000`, {autoConnect: false}));
   window.onbeforeunload = function() { 
     window.setTimeout(function () { 
         window.location = '/';
     }, 0); 
     window.onbeforeunload = null; // necessary to prevent infinite loop, that kills your browser 
   }
+
+  useEffect(() => {
+    const sessionID = localStorage.getItem("sessionID");
+    console.log(sessionID)
+    if (sessionID) {
+      socket.auth = { sessionID };
+      socket.connect();
+    }
+    socket.on("session", ({ sessionID }) => {
+      socket.auth = { sessionID };
+      localStorage.setItem("sessionID", sessionID);
+    });
+  })
 
   return (
     <div>

@@ -1,6 +1,8 @@
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+import session from "express-session";
+
 
 const app = express();
 const httpServer = createServer(app);
@@ -15,7 +17,29 @@ const io = new Server(httpServer, {
 app.use(cors());
 app.use(require('./routes/rooms'));
 
+
+io.use((socket, next) => {
+  const sessionID = socket.handshake.auth.sessionID;
+  console.log(sessionID)
+  if (sessionID) {
+    console.log('something here')
+    // const session = sessionStore.findSession(sessionID);
+    // if (session) {
+    //   socket.sessionID = sessionID;
+    //   return next();
+    // }
+  }
+  // create new session
+  socket.sessionID = randomId();
+  return next();
+});
+
+
 io.on('connection', (socket) => {
+  socket.emit("session", {
+    sessionID: socket.sessionID,
+  });
+
   socket.on('does-room-exist', (data) => {
     const rooms = io.of("/").adapter.rooms;
     const room = rooms.get(data.roomID);

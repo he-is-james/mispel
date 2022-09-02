@@ -65,6 +65,7 @@ function Landing({socket}) {
     // redirect('create-room', navigate, 
     //   {state: {
     //     playerName: usernameForm,
+    //     roomID: roomIDForm,
     //   }}
     // );
     socket.emit('does-room-exist', {

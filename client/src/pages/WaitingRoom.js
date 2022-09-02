@@ -43,6 +43,7 @@ function WaitingRoom({socket}) {
       });
     });
 
+
     socket.on('become-host', () => {
       enableHostListeners();
       enableHostListeners();
@@ -51,6 +52,9 @@ function WaitingRoom({socket}) {
 
     socket.on('player-left', (data) => {
       console.log(`detected player ${data.playerName} left`);
+      if (data.playerName === location.state.playerName) {
+        navigate('/')
+      }
       setPlayerList((playerList) => {
         const newList = playerList.filter((x) => x !== data.playerName);
         playerListRef.current = newList;
@@ -98,6 +102,15 @@ function WaitingRoom({socket}) {
     });
   }
 
+  const kickPlayer = (name) => {
+    socket.emit('player-kick', {
+      playerName: name,
+      roomID: location.state.roomID,
+      senderID: socket.id,
+    })
+  }
+
+
   return (
     <div className="flex flex-col items-center bg-yellow font-rubikone text-center text-white min-h-screen">
       <div className=" mt-12 text-7xl">Mispel</div>
@@ -110,18 +123,18 @@ function WaitingRoom({socket}) {
           </div>
         }
       </div>
-      <div className="py-5 w-[90%]"> 
-        <div className="border-t border-2 border-white"/>
-      </div>
-      <div className="grid grid-cols-3 w-full mt-8 text-3xl">
+      <div className="grid grid-cols-3 w-full mt-8">
         {playerList.map((name, key) => {
-              return (
-                <div>
-                  <div key={key}>{name}</div>
-                  {isHost && <button> Kick </button>} 
-                </div>
-              )
-            })}
+          return (
+            <>
+            <span>
+            <div className="text-3xl font-rubikone text-center mt-4" key={key}>{name}</div>
+            {isHost && name !== location.state.playerName && 
+              <button onClick ={() => kickPlayer(name)} className='bg-red-600'> Kick </button> } 
+            </span>
+            </>
+          )
+        })}
       </div>
     </div>
   );

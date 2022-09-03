@@ -1,6 +1,5 @@
 import Landing from './pages/Landing';
 import JoinRoom from './pages/JoinRoom';
-import CreateRoom from './pages/CreateRoom'
 import WaitingRoom from './pages/WaitingRoom'
 import GameRoom from './pages/GameRoom'
 import Leaderboard from './pages/Leaderboard'
@@ -25,7 +24,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing socket = {socket}/>} />
           <Route path="/:roomID" element={<Landing socket = {socket}/>} />
-          <Route path="create-room" element={<CreateRoom socket = {socket}/>} />
           <Route path="join-room" element={<JoinRoom socket = {socket}/>} />
           <Route path="waiting-room" element={<WaitingRoom socket = {socket}/> } />
           <Route path="game-room" element={<GameRoom socket = {socket}/>} />

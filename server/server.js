@@ -72,8 +72,12 @@ io.on('connection', (socket) => {
     socket.to(data.roomID).emit('start-player');
   })
 
+  socket.on('end-game', (data) => {
+    socket.to(data.roomID).emit('end-player');
+  })
+
   socket.on("disconnecting", async (reason) => {
-    
+
     const [, roomID] = socket.rooms;
     if (socket.isHost) {
       const sockets = await io.in(roomID).fetchSockets();

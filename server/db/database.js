@@ -159,15 +159,20 @@ const deleteRoom = async (db, roomName) => {
     }
 }
 
-// Gets the room's words array
-const getRoomWords = async (db, roomName) => {
+// Gets the room's info
+const getRoomInfo = async (db, roomName) => {
     try {
         const result = await db.collection("rooms").find(
             {
               roomID: roomName
             }
         ).toArray();
-        return result[0].words;
+        const info = {
+            words: result[0].words,
+            wordCount: result[0].wordCount,
+            timeLimit: result[0].timeLimit,
+        };
+        return info;
     } catch (err) {
         console.error(err);
     }
@@ -201,5 +206,5 @@ module.exports = {
     updateRoomSettings,
     updateRoomGame,
     deleteRoom,
-    getRoomWords,
+    getRoomInfo,
 }

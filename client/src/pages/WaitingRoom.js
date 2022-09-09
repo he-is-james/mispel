@@ -91,12 +91,12 @@ function WaitingRoom({socket}) {
   }, []);
 
   const moveToGameRoom = async (playerList) => {
-    const words = await client.get('/info/', {
+    const info = await client.get('/info/', {
       params: {
         roomID: location.state.roomID
       }
     });
-    console.log(words);
+    console.log(info);
     // redirect('game-room', navigate,
     //   {state: {
     //     roomID: location.state.roomID,

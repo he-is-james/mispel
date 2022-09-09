@@ -12,21 +12,25 @@ const {
     getMP3,
     createRoom,
     joinRoom,
-    getRoomWords,
+    getRoomInfo,
     updateRoomSettings,
     updateRoomGame,
     deleteRoom,
 } = require('../db/database');
 
-const databaseCall = (callback) => {
-  connectToDb(async() => {
+const databaseCall = async (callback) => {
+  let result;
+  await connectToDb(async() => {
     const db = getDb();
     dbo = db.db('db');
-    await callback(dbo);
+    result = await callback(dbo);
+    // console.log(result);
+    // console.log('here')
     db.close();
-  })
+  });
+  console.log(result);
+  console.log('there');
 }
-
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -70,18 +74,8 @@ router.post('/room/update-room-game', (req, res) => {
 
 // update the functio
 router.get('/room/info', (req, res) => {
-  // let result;
-  // connectToDb(async () => {
-  //   const db = getDb();
-  //   dbo = db.db('db');
-  //   // TODO: update to get other settings info
-  //   result = await getRoomWords(dbo, req.params.roomID);
-  //   db.close();
-  // });
-  const roomId = req.params.config;
-  console.log(roomId)
-  res.send(`Room ID: ${roomId} words!`);
-  // return result;
+  const result = databaseCall((dbo) => {return getRoomInfo(dbo, req.query.roomID)});
+  console.log(result);
 });
 
 router.delete('/room/delete-room', (req, res) => {

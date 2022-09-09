@@ -11,7 +11,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // const socket = io('http://localhost:5000');
 function App() {
-  const [socket, setSocket] = useState(io(`http://${window.location.hostname}:5000`, {autoConnect: false}));
+  const [socket, setSocket] = useState(io(`http://${window.location.hostname}:5000`));
   window.onbeforeunload = function() { 
     window.setTimeout(function () { 
         window.location = '/';
@@ -19,18 +19,6 @@ function App() {
     window.onbeforeunload = null; // necessary to prevent infinite loop, that kills your browser 
   }
 
-  useEffect(() => {
-    const sessionID = localStorage.getItem("sessionID");
-    console.log(sessionID)
-    if (sessionID) {
-      socket.auth = { sessionID };
-      socket.connect();
-    }
-    socket.on("session", ({ sessionID }) => {
-      socket.auth = { sessionID };
-      localStorage.setItem("sessionID", sessionID);
-    });
-  })
 
   return (
     <div>

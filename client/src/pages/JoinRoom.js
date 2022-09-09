@@ -20,6 +20,7 @@ function JoinRoom({socket}) {
       //     }}
       //   );
       // });
+      // add local storage here
       redirect('waiting-room', navigate, 
         {state: {
           roomID: roomIDRef.current,

@@ -25,6 +25,10 @@ function Landing({socket}) {
       alert('room does not exist');
     })
     socket.on('room-does-exist', (data) => {
+
+
+      
+
       socket.emit('check-name', {
         roomID: data.roomID,
         playerName: data.playerName
@@ -54,6 +58,26 @@ function Landing({socket}) {
     //     playerName: usernameForm,
     //   }}
     // );
+      const rooms = JSON.parse(window.localStorage.getItem("rooms")) ?? [];
+      const found = false;
+      console.log(rooms)
+
+      if (rooms) {
+        rooms.forEach(room => {
+          if (room.id === roomIDForm) {
+            alert(`You already joined this room as ${room.playerName} navigate back`)
+            found = true;
+          }
+        })
+      }
+
+      if (!found) {
+        rooms.push({playerName: usernameForm, id: roomIDForm})
+      }
+
+      window.localStorage.setItem("rooms", JSON.stringify(rooms))
+
+
     socket.emit('does-room-exist', {
       roomID: roomIDForm,
       playerName: usernameForm,
@@ -68,6 +92,27 @@ function Landing({socket}) {
     //     roomID: roomIDForm,
     //   }}
     // );
+
+      console.log(`hello`)
+      const rooms = JSON.parse(window.localStorage.getItem("rooms")) ?? [];
+      const found = false;
+      console.log(rooms)
+
+      if (rooms) {
+        rooms.forEach(room => {
+          if (room.id === roomIDForm) {
+            alert(`You already joined this room as ${room.playerName} navigate back`)
+            found = true;
+          }
+        })
+      }
+
+      if (!found) {
+        rooms.push({playerName: usernameForm, id: roomIDForm})
+      }
+
+      window.localStorage.setItem("rooms", JSON.stringify(rooms))
+
     socket.emit('does-room-exist', {
       roomID: roomIDForm,
       playerName: usernameForm,

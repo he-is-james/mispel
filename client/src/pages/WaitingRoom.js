@@ -3,6 +3,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import Modal from 'react-modal';
 import { redirect } from '../utils/routerUtils';
 import SettingsModal from './SettingsModal';
+import axios from 'axios';
 
 const customStyles = {
   content: {
@@ -16,6 +17,10 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
   },
 };
+
+const client = axios.create({
+  baseURL: 'http://localhost:5000/room'
+});
 
 function WaitingRoom({socket}) {
   const location = useLocation();
@@ -85,15 +90,21 @@ function WaitingRoom({socket}) {
     }
   }, []);
 
-  const moveToGameRoom = (playerList) => {
-    redirect('game-room', navigate,
-      {state: {
-        roomID: location.state.roomID,
-        playerName: location.state.playerName,
-        playerList: playerList,
-        socketID: socket.id,
-      }}
-    );
+  const moveToGameRoom = async (playerList) => {
+    const words = await client.get('/info/', {
+      params: {
+        roomID: location.state.roomID
+      }
+    });
+    console.log(words);
+    // redirect('game-room', navigate,
+    //   {state: {
+    //     roomID: location.state.roomID,
+    //     playerName: location.state.playerName,
+    //     playerList: playerList,
+    //     socketID: socket.id,
+    //   }}
+    // );
   }
 
   const startGame = () => {

@@ -73,17 +73,19 @@ router.post('/room/update-room-game', (req, res) => {
   res.send(`Room ID: ${roomId} game updated!`);
 });
 
-router.get('/room/words', (req, res) => {
-  let result;
-  connectToDb(async () => {
-    const db = getDb();
-    dbo = db.db('db');
-    result = await getRoomWords(dbo, req.body.roomID);
-    db.close();
-  });
-  const roomId = req.params.id;
+router.get('/room/info', (req, res) => {
+  // let result;
+  // connectToDb(async () => {
+  //   const db = getDb();
+  //   dbo = db.db('db');
+  //   // TODO: update to get other settings info
+  //   result = await getRoomWords(dbo, req.params.roomID);
+  //   db.close();
+  // });
+  const roomId = req.params.config;
+  console.log(roomId)
   res.send(`Room ID: ${roomId} words!`);
-  return result;
+  // return result;
 });
 
 router.delete('/room/delete-room', (req, res) => {

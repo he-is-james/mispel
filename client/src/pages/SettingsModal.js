@@ -1,12 +1,24 @@
 import { useState } from 'react';
 import SettingsButton from '../components/SettingsButton';
+import axios from 'axios';
 
+const client = axios.create({
+  baseURL: 'http://localhost:5000/room'
+});
 
 function SettingsModal() {
   const [timeActive, setTimeActive] = useState(0);
   const [wordCountActive, setWordCountActive] = useState(0);
   const times = [10, 15, 30, 60];
   const wordCounts = [5,10,15,20];
+
+  const saveSettings = () => {
+    client.post('/update-room-settings', {
+      roomID: 'rip',
+      wordsCount: wordCountActive,
+      timeLimit: timeActive
+    });
+  };
 
   return (
     <div className="bg-navy font-rubikone text-white p-6">
@@ -24,7 +36,7 @@ function SettingsModal() {
             {wordCounts.map((count, index) => <SettingsButton key= {index} content={`${count}`} active={wordCountActive===index} onClick={() => setWordCountActive(index)}/>)}
           </div>
         </div>
-        <button className="bg-navy mt-20 text-4xl py-2 px-6 rounded-md hover:bg-sky">
+        <button onClick={() => saveSettings()} className="bg-navy mt-20 text-4xl py-2 px-6 rounded-md hover:bg-sky">
           Save Settings
         </button>
       </div>

@@ -41,7 +41,7 @@ connectToDb(async () => {
     db = getDb();
     dbo = db.db('db');
     // await deleteRoom(dbo, 'Shuby');
-    // await createRoom(dbo, 'Shuby', 'james');
+    await createRoom(dbo, 'Shuby', 'james');
     // await joinRoom(dbo, 'Shuby', 'sunny'); 
     // await updateRoomSettings(dbo, 'Shuby', -1, 20);
     // await updateRoomGame(dbo, 'Shuby', {james: 10, sunny: 20}, {'resternat': 2, 'resatreant': 1})

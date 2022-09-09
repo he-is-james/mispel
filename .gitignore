@@ -6,3 +6,4 @@ client/package-lock.json
 *.mp3
 
 package-lock.json
+client/package-lock.json

@@ -97,21 +97,17 @@ function Landing({socket}) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center bg-orange font-rubikone text-center text-white min-h-screen">
+    <div className="flex flex-col items-center justify-center bg-prussian font-rubikone text-center text-honeydew min-h-screen">
       <div className="text-9xl">Mispel</div>
-      <div className="mt-6">
-        <label className="text-3xl">
-          Enter Your Username:<br/>
-        </label>
-        <input value = {usernameForm} onChange = {handleUsernameChange} type="text" name="name" className="text-center text-3xl bg-gray-400 mt-6 w-[75%] h-12 rounded-md focus:outline-none"/><br/>
-        <label className="text-3xl">
-          Enter Room Name:<br/>
-        </label>
-        <input value = {roomIDForm} onChange = {handleRoomIDChange} type="text" name="room" className="text-center text-3xl bg-gray-400 mt-6 w-[75%] h-12 rounded-md focus:outline-none"/>
+      <div>
+        <div className="text-3xl mt-6">Enter Your Username:<br/></div>
+        <input value = {usernameForm} onChange = {handleUsernameChange} type="text" name="name" className="text-center text-3xl bg-gray-400 mt-2 w-[75%] h-12 rounded-md focus:outline-none"/><br/>
+        <div className="text-3xl mt-6">Enter Room Name:<br/></div>
+        <input value = {roomIDForm} onChange = {handleRoomIDChange} type="text" name="room" className="text-center text-3xl bg-gray-400 mt-2 w-[75%] h-12 rounded-md focus:outline-none"/>
       </div>
-      <button disabled = {usernameForm === ''} onClick = {onJoin} className="bg-navy text-4xl py-2 px-10 mt-8 rounded-md hover:bg-sky">Join Room</button>
+      <button disabled = {usernameForm === ''} onClick = {onJoin} className="bg-orange text-4xl py-2 px-10 mt-8 rounded-md hover:bg-red">Join Room</button>
       <br/>
-      <button disabled = {usernameForm === ''} onClick = {onCreate} className="bg-navy text-4xl py-2 px-7 mt-2 rounded-md hover:bg-sky">Create Room</button>
+      <button disabled = {usernameForm === ''} onClick = {onCreate} className="bg-orange text-4xl py-2 px-7 mt-2 rounded-md hover:bg-red">Create Room</button>
     </div>
   );
 }

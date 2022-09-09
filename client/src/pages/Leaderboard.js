@@ -19,7 +19,7 @@ function Leaderboard() {
 				<div className="flex mt-8 items-end">
 					<label className="text-7xl">Leaderboard</label>
 					<div className="flex grow justify-end">
-						<button className="bg-yellow px-4 py-0 h-20 text-4xl px-6 rounded-md hover:bg-orange">Next Word</button>
+						<button className="bg-orange px-4 py-0 h-20 text-4xl px-6 rounded-md hover:bg-red">Next Word</button>
 					</div>
 				</div>
 				<div className="py-5"> 
@@ -31,7 +31,7 @@ function Leaderboard() {
 			</div>
 			<div className="mb-12 w-[90%]">
 				<div className="flex grow justify-end">
-					<button className="bg-yellow text-4xl p-4 rounded-md hover:bg-orange">Finish Game</button>
+					<button className="bg-orange text-4xl p-4 rounded-md hover:bg-red">Finish Game</button>
 				</div>
 			</div>
 		</div>

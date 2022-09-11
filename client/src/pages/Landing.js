@@ -27,7 +27,7 @@ function Landing({socket}) {
       }).catch(err => {
         console.error('Error creating room', err);
       });
-      redirect('create-room', navigate, 
+      redirect('waiting-room', navigate, 
         {state: {
           roomID: data.roomID,
           playerName: data.playerName,
@@ -48,7 +48,7 @@ function Landing({socket}) {
       alert('name taken');
     })
     socket.on('name-available', (data) => {
-      client.post('/join-room', {
+      client.patch('/join-room', {
         roomID: data.roomID,
         playerName: data.playerName
       }).then(() => {

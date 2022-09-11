@@ -1,28 +1,13 @@
-const {MongoClient} = require("mongodb");
+const { MongoClient } = require("mongodb");
 require('dotenv').config();
 
 const uri = process.env.DB_URI;
 
-const client = new MongoClient(uri);
-let dbConn;
-
-async function connectToDb(callback) {
-    client.connect((err, db) => {
-        if (err || !db) {
-            return callback(err);
-        }
-        dbConn = db;
-
-        return callback();
-    });
+function connect(url) {
+    return MongoClient.connect(url).then(client => client.db('db'));
 }
 
-function getDb() {
-    return dbConn;
+module.exports = async function() {
+    const database = await Promise.resolve(connect(uri));
+    return database;
 }
-
-
-module.exports = {
-    connectToDb,
-    getDb,
-};

@@ -91,6 +91,25 @@ const joinRoom = async (db, roomName, player) => {
     }
 }
 
+// Gets the room's info for words, word count, and time limit
+const getRoomInfo = async (db, roomName) => {
+    try {
+        const result = await db.collection("rooms").find(
+            {
+              roomID: roomName
+            }
+        ).toArray();
+        const info = {
+            words: result[0].words,
+            wordCount: result[0].wordCount,
+            timeLimit: result[0].timeLimit,
+        };
+        return info;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 // Updates room settings for words
 const updateRoomSettings = async (db, roomName, newWordsCount, newTimeLimit) => {
     try {
@@ -158,20 +177,6 @@ const deleteRoom = async (db, roomName) => {
         console.error(err);
     }
 }
-
-// Gets the room's words array
-const getRoomWords = async (db, roomName) => {
-    try {
-        const result = await db.collection("rooms").find(
-            {
-              roomID: roomName
-            }
-        ).toArray();
-        return result[0].words;
-    } catch (err) {
-        console.error(err);
-    }
-}
 // ==========================================================================
 
 
@@ -179,13 +184,17 @@ const getRoomWords = async (db, roomName) => {
 // ==========================================================================
 // Randomly selects specific number of words from database's word list to use for the game rooms
 const getRandomWords = async (db, number) => {
-    var cursor = (db.collection("words").aggregate([{ $sample: { size: number } }]));
-    // Creates array of size 'number'
-    const words = (await cursor.toArray());
-    words.forEach((word) => {
-        delete word._id;
-    })
-    return words;
+    try {
+        var cursor = (db.collection("words").aggregate([{ $sample: { size: number } }]));
+        // Creates array of size 'number'
+        const words = (await cursor.toArray());
+        words.forEach((word) => {
+            delete word._id;
+        })
+        return words;
+    } catch (err) {
+        console.error(err);
+    }
 }
 // ==========================================================================
 
@@ -201,5 +210,5 @@ module.exports = {
     updateRoomSettings,
     updateRoomGame,
     deleteRoom,
-    getRoomWords,
+    getRoomInfo,
 }

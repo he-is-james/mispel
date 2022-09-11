@@ -7,16 +7,16 @@ const client = axios.create({
 });
 
 function SettingsModal() {
-  const [timeActive, setTimeActive] = useState(0);
-  const [wordCountActive, setWordCountActive] = useState(0);
+  const [timeActive, setTimeActive] = useState(1);
+  const [wordCountActive, setWordCountActive] = useState(2);
   const times = [10, 15, 30, 60];
   const wordCounts = [5,10,15,20];
 
-  const saveSettings = () => {
-    client.post('/update-room-settings', {
+  const saveSettings = async () => {
+    await client.patch('/update-room-settings', {
       roomID: 'rip',
-      wordsCount: wordCountActive,
-      timeLimit: timeActive
+      wordsCount: wordCounts[wordCountActive],
+      timeLimit: times[timeActive]
     });
   };
 

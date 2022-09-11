@@ -48,7 +48,7 @@ function Landing({socket}) {
       alert('name taken');
     })
     socket.on('name-available', (data) => {
-      client.post('/join-room', {
+      client.patch('/join-room', {
         roomID: data.roomID,
         playerName: data.playerName
       }).then(() => {

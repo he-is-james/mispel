@@ -184,13 +184,17 @@ const getRoomInfo = async (db, roomName) => {
 // ==========================================================================
 // Randomly selects specific number of words from database's word list to use for the game rooms
 const getRandomWords = async (db, number) => {
-    var cursor = (db.collection("words").aggregate([{ $sample: { size: number } }]));
-    // Creates array of size 'number'
-    const words = (await cursor.toArray());
-    words.forEach((word) => {
-        delete word._id;
-    })
-    return words;
+    try {
+        var cursor = (db.collection("words").aggregate([{ $sample: { size: number } }]));
+        // Creates array of size 'number'
+        const words = (await cursor.toArray());
+        words.forEach((word) => {
+            delete word._id;
+        })
+        return words;
+    } catch (err) {
+        console.error(err);
+    }
 }
 // ==========================================================================
 

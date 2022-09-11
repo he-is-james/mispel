@@ -12,10 +12,11 @@ const io = new Server(httpServer, {
     origin: "*"
   }
 })
+const initializeDatabase = require('./db/conn');
+const routes = require('./routes/rooms');
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(require('./routes/rooms'));
 
 io.on('connection', (socket) => {
   socket.on('does-room-exist', (data) => {
@@ -101,6 +102,14 @@ io.on('connection', (socket) => {
     console.log(`socket ${socket.id} disconnect`);
   });
 })
+
+initializeDatabase().then(dbo => {
+  routes(app, dbo)
+}).catch(err => {
+  console.error('Failed to connect to the database!');
+  console.error(err);
+  process.exit(1);
+});
 
 httpServer.listen(port, () => {
   console.log(`Server is running on port ${port}`);

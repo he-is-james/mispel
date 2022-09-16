@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { useLocation } from 'react-router-dom';
-import Timer from '../components/Timer';
 import PlayButton from "../components/PlayButton";
 import Player from "../utils/Player";
+import LeaderboardList from "../components/LeaderboardList";
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 function GameRoom() {
 	const location = useLocation();

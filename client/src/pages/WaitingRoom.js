@@ -22,14 +22,25 @@ const client = axios.create({
   baseURL: 'http://localhost:5000/room'
 });
 
+
 function WaitingRoom({socket}) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [timeActive, setTimeActive] = useState(1);
+  const [wordCountActive, setWordCountActive] = useState(2);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [playerList, setPlayerList] = useState([location.state.playerName]);
   const [isHost, setIsHost] = useState(location.state.isHost);
   const playerListRef = useRef(playerList);
-  
+
+  const saveSettings = async (wordCount, timeLimit) => {
+    await client.patch('/update-room-settings', {
+      roomID: location.state.roomID,
+      wordsCount: wordCount,
+      timeLimit: timeLimit
+    });
+  };
+
   useEffect(() => {
     if (location.state.isHost) {
       socket.emit('host-game', {
@@ -177,7 +188,14 @@ function WaitingRoom({socket}) {
         style={customStyles}
         contentLabel="Shu gay Modal"
       >
-        <SettingsModal />
+        <SettingsModal
+          setIsSettingsModalOpen = {setIsSettingsModalOpen}
+          wordCountActive = {wordCountActive}
+          setWordCountActive = {setWordCountActive}
+          timeActive = {timeActive}
+          setTimeActive = {setTimeActive}
+          saveSettings = {saveSettings}
+        />
       </Modal>
     </div>
   );

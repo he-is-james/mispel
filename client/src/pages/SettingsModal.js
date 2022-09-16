@@ -6,19 +6,16 @@ const client = axios.create({
   baseURL: 'http://localhost:5000/room'
 });
 
-function SettingsModal() {
-  const [timeActive, setTimeActive] = useState(1);
-  const [wordCountActive, setWordCountActive] = useState(2);
+function SettingsModal({
+  setIsSettingsModalOpen,
+  wordCountActive,
+  setWordCountActive,
+  timeActive,
+  setTimeActive,
+  saveSettings,
+}) {
   const times = [10, 15, 30, 60];
   const wordCounts = [5,10,15,20];
-
-  const saveSettings = async () => {
-    await client.patch('/update-room-settings', {
-      roomID: 'rip',
-      wordsCount: wordCounts[wordCountActive],
-      timeLimit: times[timeActive]
-    });
-  };
 
   return (
     <div className="bg-navy font-rubikone text-white p-6">
@@ -36,7 +33,10 @@ function SettingsModal() {
             {wordCounts.map((count, index) => <SettingsButton key= {index} content={`${count}`} active={wordCountActive===index} onClick={() => setWordCountActive(index)}/>)}
           </div>
         </div>
-        <button onClick={() => saveSettings()} className="bg-navy mt-20 text-4xl py-2 px-6 rounded-md hover:bg-sky">
+        <button onClick={() => {
+          saveSettings(wordCounts[wordCountActive], times[timeActive]);
+          setIsSettingsModalOpen(false);
+        }} className="bg-navy mt-20 text-4xl py-2 px-6 rounded-md hover:bg-sky">
           Save Settings
         </button>
       </div>

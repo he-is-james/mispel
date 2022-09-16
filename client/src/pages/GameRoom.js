@@ -9,28 +9,36 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 function GameRoom() {
 	const location = useLocation();
 	const [page, setPage] = useState(0);
-	const [score, setScore] = useState(0);
+	const [score, setScore] = useState(1000);
 	const [isBadGuess, setBadGuess] = useState(false);
 	const [remainingGuesses, setRemainingGuesses] = useState(8);
 	const [guessForm, setGuessForm] = useState('');
-	const timeLimit = 15;
-	const word = 'test';
-	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2), new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2)]);
 
-	// const location = useLocation();
-	// const [players, setPlayers] = useState(location.state.playerList.reduce((playersObj, player) => {
-	// 	return {
-	// 		...playersObj,
-	// 		[player]: new Player(player)
-	// 	}
-	// }, {}));
-	// console.log(players);
+	const { timeLimit } = location.state.gameInfo;
+	const wordsArray = location.state.gameInfo.words;
+	const [currWordPos, setCurrWordPos] = useState(0);
+
+	// TO BE REMOVED
+	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2), new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2)]);
+	
+	const playersList = location.state.playerList.reduce((playersObj, player) => {
+		return {
+			...playersObj,
+			[player]: new Player(player)
+		}
+	}, {})
+	const [players, setPlayers] = useState(playersList);
+	const [player, setPlayer] = useState(playersList[location.state.playerName])
+	// TO BE USED
+	// const currScore = player.score;
 
 	const handleTimeUp = () => {
-		setRemainingGuesses(0);
+		setBadGuess(true);
+		setPage(1);
+		// TO BE REMOVED
 		setTimeout(() => {
-			setPage(1);
-		}, 200);
+			setPage(2);
+		}, 3000);
 	}
 
 	const handleGuessForm = (event) => {
@@ -39,14 +47,47 @@ function GameRoom() {
 	}
 
 	const handleGuess = () => {
-		if (guessForm === word) {
-			setBadGuess(false);
-			setPage(1);
+		if (guessForm !== '') {
+			if (guessForm === wordsArray[currWordPos].word) {
+				setBadGuess(false);
+				setPlayer((currentPlayer) => {
+					currentPlayer.score += score;
+					return currentPlayer;
+				});
+				setPage(1);
+				// TO BE REMOVED
+				setTimeout(() => {
+					setPage(2);
+				}, 3000);
+			}
+			else {
+				setBadGuess(true);
+				setRemainingGuesses(remainingGuesses - 1);
+				setScore((s) => {
+					if (s - 50 >= 200) {
+						return s - 50;
+					} 
+					return s;
+				})
+			}
+			setPlayer((currentPlayer) => {
+				if (guessForm in currentPlayer.attempts) {
+					currentPlayer.attempts[guessForm] += 1;
+				} else {
+					currentPlayer.attempts[guessForm] = 1;
+				}
+				return currentPlayer;
+			})
+			setGuessForm('');
 		}
-		else {
-			setBadGuess(true);
-			setRemainingGuesses(remainingGuesses - 1);
-		}
+	}
+
+	const handleNextWord = () => {
+		setScore(1000);
+		setBadGuess(false);
+		setRemainingGuesses(8);
+		setCurrWordPos((pos) => pos + 1);
+		setPage(0);
 	}
 
 	if (page === 0) {
@@ -73,7 +114,16 @@ function GameRoom() {
 							size={120}
 							colors={['#33658A', '#F7B801', '#A30000', '#A30000']}
 							colorsTime={[7, 5, 2, 0]}
-							onComplete={handleTimeUp}>
+							onComplete={handleTimeUp}
+							onUpdate={(remainingTime) => {
+								if (remainingTime < timeLimit) {
+									setScore((s) => {
+										s -= 400/timeLimit;
+										return Math.round(s);
+									});
+								} 
+								return remainingTime
+							}}>
 							{({ remainingTime }) => remainingTime}
 						</CountdownCircleTimer>
 					</div>
@@ -84,8 +134,8 @@ function GameRoom() {
 	}
 	if (page === 1) {
 		return (
-		<div className={`flex flex-col flex-wrap grow font-rubikone text-6xl justify-center text-center text-honeydew min-h-screen ${(remainingGuesses !== 0) ? "bg-green" : "bg-red"}`}>
-			<div>{(remainingGuesses !== 0) ? "Word Guessed Correctly" : " You Ran Out of Attempts"}</div>
+		<div className={`flex flex-col flex-wrap grow font-rubikone text-6xl justify-center text-center text-honeydew min-h-screen ${(!isBadGuess) ? "bg-green" : "bg-red"}`}>
+			<div>{(!isBadGuess) ? "Word Guessed Correctly" : " You Ran Out of Time"}</div>
 			<div>Waiting for Other Players...</div>
 		</div>);
 	}
@@ -97,7 +147,7 @@ function GameRoom() {
 				<div className="flex mt-8 items-end">
 					<label className="text-7xl">Leaderboard</label>
 					<div className="flex grow justify-end">
-						<button className="bg-orange px-4 py-0 h-20 text-4xl px-6 rounded-md hover:bg-red">Next Word</button>
+						<button className="bg-orange px-4 py-0 h-20 text-4xl px-6 rounded-md hover:bg-red" onClick={handleNextWord}>Next Word</button>
 					</div>
 				</div>
 				<div className="py-5"> 

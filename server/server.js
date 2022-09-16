@@ -5,6 +5,7 @@ const { Server } = require('socket.io');
 
 const app = express();
 const httpServer = createServer(app);
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const port = 5000;
 const io = new Server(httpServer, {
@@ -12,9 +13,11 @@ const io = new Server(httpServer, {
     origin: "*"
   }
 })
+const initializeDatabase = require('./db/conn');
+const routes = require('./routes/rooms');
 
 app.use(cors());
-app.use(require('./routes/rooms'));
+app.use(bodyParser.json());
 
 
 io.on('connection', (socket) => {
@@ -74,6 +77,15 @@ io.on('connection', (socket) => {
 
   })
 
+  socket.on('player-kick', (data) => {
+    io.in(data.roomID).fetchSockets().then(sockets => {
+      const toKick = sockets.find(socket => socket.playerName === data.playerName)
+      io.in(data.roomID).emit('player-left', {playerName: data.playerName})
+      toKick.leave()
+      console.log(`Player ${data.playerName} kicked from ${data.roomID}`)
+    })
+  })
+  
   socket.on('start-game', (data) => {
     socket.to(data.roomID).emit('start-player');
   })
@@ -96,6 +108,14 @@ io.on('connection', (socket) => {
     console.log(`socket ${socket.id} disconnect`);
   });
 })
+
+initializeDatabase().then(dbo => {
+  routes(app, dbo)
+}).catch(err => {
+  console.error('Failed to connect to the database!');
+  console.error(err);
+  process.exit(1);
+});
 
 httpServer.listen(port, () => {
   console.log(`Server is running on port ${port}`);

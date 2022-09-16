@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { redirect } from '../utils/routerUtils';
+import axios from 'axios';
+
+const client = axios.create({
+  baseURL: 'http://localhost:5000/room'
+});
 
 function Landing({socket}) {
   const location = useLocation();
@@ -8,12 +13,21 @@ function Landing({socket}) {
   const params = useParams();
   const [usernameForm, setUsernameForm] = useState(location.state ? location.state.playerName : '');
   const [roomIDForm, setRoomIDForm] = useState(params.roomID || '');
+  
   useEffect(() => {
     socket.on('room-id-taken', () => {
       alert('room id taken');
     })
     socket.on('room-id-available', (data) => {
-      redirect('create-room', navigate, 
+      client.post('/create-room', {
+        roomID: data.roomID,
+        hostName: data.playerName
+      }).then(() => {
+        console.log(`Created ${data.roomID}`);
+      }).catch(err => {
+        console.error('Error creating room', err);
+      });
+      redirect('waiting-room', navigate, 
         {state: {
           roomID: data.roomID,
           playerName: data.playerName,
@@ -38,6 +52,14 @@ function Landing({socket}) {
       alert('name taken');
     })
     socket.on('name-available', (data) => {
+      client.patch('/join-room', {
+        roomID: data.roomID,
+        playerName: data.playerName
+      }).then(() => {
+        console.log(`Joined ${data.roomID}`);
+      }).catch(err => {
+        console.error('Error joining room', err);
+      });
       redirect('waiting-room', navigate, 
         {state: {
           roomID: data.roomID,
@@ -53,31 +75,6 @@ function Landing({socket}) {
   }, []);
 
   const onJoin = () => {
-    // redirect('join-room', navigate, 
-    //   {state: {
-    //     playerName: usernameForm,
-    //   }}
-    // );
-      const rooms = JSON.parse(window.localStorage.getItem("rooms")) ?? [];
-      const found = false;
-      console.log(rooms)
-
-      if (rooms) {
-        rooms.forEach(room => {
-          if (room.id === roomIDForm) {
-            alert(`You already joined this room as ${room.playerName} navigate back`)
-            found = true;
-          }
-        })
-      }
-
-      if (!found) {
-        rooms.push({playerName: usernameForm, id: roomIDForm})
-      }
-
-      window.localStorage.setItem("rooms", JSON.stringify(rooms))
-
-
     socket.emit('does-room-exist', {
       roomID: roomIDForm,
       playerName: usernameForm,
@@ -86,33 +83,6 @@ function Landing({socket}) {
   }
 
   const onCreate = () => {
-    // redirect('create-room', navigate, 
-    //   {state: {
-    //     playerName: usernameForm,
-    //     roomID: roomIDForm,
-    //   }}
-    // );
-
-      console.log(`hello`)
-      const rooms = JSON.parse(window.localStorage.getItem("rooms")) ?? [];
-      const found = false;
-      console.log(rooms)
-
-      if (rooms) {
-        rooms.forEach(room => {
-          if (room.id === roomIDForm) {
-            alert(`You already joined this room as ${room.playerName} navigate back`)
-            found = true;
-          }
-        })
-      }
-
-      if (!found) {
-        rooms.push({playerName: usernameForm, id: roomIDForm})
-      }
-
-      window.localStorage.setItem("rooms", JSON.stringify(rooms))
-
     socket.emit('does-room-exist', {
       roomID: roomIDForm,
       playerName: usernameForm,

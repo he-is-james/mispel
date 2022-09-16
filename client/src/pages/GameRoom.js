@@ -17,14 +17,13 @@ function GameRoom() {
 	const word = 'test';
 	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2), new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2)]);
 
-	// const location = useLocation();
-	// const [players, setPlayers] = useState(location.state.playerList.reduce((playersObj, player) => {
-	// 	return {
-	// 		...playersObj,
-	// 		[player]: new Player(player)
-	// 	}
-	// }, {}));
-	// console.log(players);
+	const [players, setPlayers] = useState(location.state.playerList.reduce((playersObj, player) => {
+		return {
+			...playersObj,
+			[player]: new Player(player)
+		}
+	}, {}));
+	console.log(players);
 
 	const handleTimeUp = () => {
 		setRemainingGuesses(0);
@@ -47,6 +46,7 @@ function GameRoom() {
 			setBadGuess(true);
 			setRemainingGuesses(remainingGuesses - 1);
 		}
+		// add attempt to players attempt
 	}
 
 	if (page === 0) {

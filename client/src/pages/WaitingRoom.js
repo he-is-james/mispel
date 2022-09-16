@@ -108,16 +108,16 @@ function WaitingRoom({socket}) {
       }
     });
     const gameInfo = result.data;
-    // TODO: gameInfo has words array, word count, and time limit which needs to be sent to game
-    console.log(gameInfo);
-    // redirect('game-room', navigate,
-    //   {state: {
-    //     roomID: location.state.roomID,
-    //     playerName: location.state.playerName,
-    //     playerList: playerList,
-    //     socketID: socket.id,
-    //   }}
-    // );
+    gameInfo.currentWordPosition = 0;
+    redirect('game-room', navigate,
+      {state: {
+        roomID: location.state.roomID,
+        playerName: location.state.playerName,
+        playerList: playerList,
+        socketID: socket.id,
+        gameInfo: gameInfo,
+      }}
+    );
   }
 
   const startGame = () => {

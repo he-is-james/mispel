@@ -108,16 +108,16 @@ function WaitingRoom({socket}) {
       }
     });
     const gameInfo = result.data;
-    // TODO: gameInfo has words array, word count, and time limit which needs to be sent to game
-    console.log(gameInfo);
-    // redirect('game-room', navigate,
-    //   {state: {
-    //     roomID: location.state.roomID,
-    //     playerName: location.state.playerName,
-    //     playerList: playerList,
-    //     socketID: socket.id,
-    //   }}
-    // );
+    gameInfo.currentWordPosition = 0;
+    redirect('game-room', navigate,
+      {state: {
+        roomID: location.state.roomID,
+        playerName: location.state.playerName,
+        playerList: playerList,
+        socketID: socket.id,
+        gameInfo: gameInfo,
+      }}
+    );
   }
 
   const startGame = () => {
@@ -159,8 +159,8 @@ function WaitingRoom({socket}) {
   return (
     <div className="flex flex-col items-center bg-yellow font-rubikone text-center text-white min-h-screen">
       <div className=" mt-12 text-7xl">Mispel</div>
-      <div className="text-6xl mt-8">Room Code: {location.state.roomID}<br/></div>
-      <div className="flex flex-row w-[90%]">
+      <div className="text-6xl mt-4">Room Code: {location.state.roomID}<br/></div>
+      <div className="flex flex-row w-[90%] mt-4">
         <div className="align-center text-5xl ">Players</div>
         {isHost &&
           <div className="flex flex-grow justify-end">
@@ -168,6 +168,9 @@ function WaitingRoom({socket}) {
             <button className="bg-navy text-4xl py-2 px-6 rounded-md hover:bg-sky" onClick={startGame}>Start</button>
           </div>
         }
+      </div>
+      <div className="py-2 w-[90%]"> 
+        <div className="border-t border-2 border-white"/>
       </div>
       <div className="grid grid-cols-3 w-full mt-8 text-3xl">
         {playerList.map((name, key) => {

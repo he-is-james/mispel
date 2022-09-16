@@ -86,7 +86,6 @@ function GameRoom() {
 		setScore(1000);
 		setBadGuess(false);
 		setRemainingGuesses(8);
-		console.log(currWordPos);
 		setCurrWordPos((pos) => pos + 1);
 		setPage(0);
 	}
@@ -115,11 +114,16 @@ function GameRoom() {
 							size={120}
 							colors={['#33658A', '#F7B801', '#A30000', '#A30000']}
 							colorsTime={[7, 5, 2, 0]}
-							onComplete={handleTimeUp}>
+							onComplete={handleTimeUp}
 							onUpdate={(remainingTime) => {
-								setScore((s) => s -= 400/timeLimit);
+								if (remainingTime < timeLimit) {
+									setScore((s) => {
+										s -= 400/timeLimit;
+										return Math.round(s);
+									});
+								} 
 								return remainingTime
-							}}
+							}}>
 							{({ remainingTime }) => remainingTime}
 						</CountdownCircleTimer>
 					</div>

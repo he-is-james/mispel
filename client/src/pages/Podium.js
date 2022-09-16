@@ -5,7 +5,7 @@ function Podium() {
 	const [playerScore, setPlayerScore] = useState(0)
 
 	return (
-		<div className="flex flex-col items-center justify-center bg-orange font-rubikone text-center text-white min-h-screen">
+		<div className="flex flex-col items-center justify-center bg-sky font-rubikone text-center text-honeydew min-h-screen">
 			<div className="text-5xl mt-12">Mispel</div>
 			<div className="text-7xl mt-8">Congratulations!</div>
 			<div className="flex grow flex-col justify-center">
@@ -17,7 +17,7 @@ function Podium() {
 					<label className="text-6xl text-center">Your Score: 11000</label>
 				</div>
 				<div className="flex basis-1/4 justify-end flex whitespace-nowrap">
-					<button className="bg-navy text-4xl py-4 px-6 rounded-md hover:bg-sky">Play Again</button>
+					<button className="bg-orange text-4xl py-4 px-6 rounded-md hover:bg-red">Play Again</button>
 				</div>
 			</div>
 		</div>

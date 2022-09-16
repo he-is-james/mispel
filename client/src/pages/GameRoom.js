@@ -7,6 +7,7 @@ import Player from "../utils/Player";
 
 function GameRoom() {
 	const location = useLocation();
+	const [page, setPage] = useState(0);
 	const [score, setScore] = useState(0);
 	const [isBadGuess, setBadGuess] = useState(false);
 	const [remainingGuesses, setRemainingGuesses] = useState(8);
@@ -25,8 +26,9 @@ function GameRoom() {
 	// console.log(players);
 
 	const handleTimeUp = () => {
+		setRemainingGuesses(0);
 		setTimeout(() => {
-			setPage(2)
+			setPage(1);
 		}, 200);
 	}
 

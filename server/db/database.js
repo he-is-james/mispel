@@ -110,6 +110,11 @@ const getRoomInfo = async (db, roomName) => {
     }
 }
 
+// Checks whether the room with the roomName exists
+const checkRoomExists = async(db, roomName) => {
+    return getRoomInfo(db, roomName).size() > 0;
+}
+
 // Updates room settings for words
 const updateRoomSettings = async (db, roomName, newWordsCount, newTimeLimit) => {
     try {
@@ -211,4 +216,5 @@ module.exports = {
     updateRoomGame,
     deleteRoom,
     getRoomInfo,
+    checkRoomExists
 }

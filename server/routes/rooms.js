@@ -11,6 +11,7 @@ const {
     updateRoomSettings,
     updateRoomGame,
     deleteRoom,
+    checkRoomExists,
 } = require('../db/database');
 
 module.exports = function(app, dbo) {
@@ -19,11 +20,17 @@ module.exports = function(app, dbo) {
     // TODO: send leaderboard information
   });
 
-  app.post('/room/create-room', async (req, res) => {
-    await createRoom(dbo, req.body.roomID, req.body.hostName);
+  app.post('/room/create-room', async (req, res, next) => {
     const roomID = req.body.roomID;
+    const exists = await (checkRoomExists(dbo, roomID))
+    if (exists) {
+      await createRoom(dbo, req.body.roomID, req.body.hostName);
     const name = req.body.hostName;
     res.send(`Room ID: ${roomID} created by ${name}!`);
+    } else {
+      next(`Room ID: ${roomID} already exists`)
+    }
+    
   });
 
   app.patch('/room/join-room', async (req, res) => {

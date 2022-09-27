@@ -1,9 +1,11 @@
 
 class Player {
-  constructor(name) {
+  constructor(name, numRounds) {
     this._name = name;
     this._score = 0;
-    this._attempts = {}; // ex: {'restarant': 2, 'rstanrt': 3, 'restaurnt': 1}
+    this._attempts = Array.from({length: numRounds}, (v, i) => {
+      return {};
+    }); // ex: {'restarant': 2, 'rstanrt': 3, 'restaurnt': 1}
   }
   
   get name() {

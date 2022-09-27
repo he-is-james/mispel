@@ -113,6 +113,7 @@ function WaitingRoom({socket}) {
       {state: {
         roomID: location.state.roomID,
         playerName: location.state.playerName,
+        isHost: isHost,
         playerList: playerList,
         socketID: socket.id,
         gameInfo: gameInfo,

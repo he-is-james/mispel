@@ -1,17 +1,7 @@
 import { useState } from 'react';
 import LeaderboardList from '../components/LeaderboardList';
 
-function Leaderboard() {
-
-	class Player {
-		constructor(name, score) {
-			this.name = name;
-			this.score = score;
-		}
-	}
-
-	const [playerList, setPlayerList] = useState([new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2), new Player('bob', 0), new Player('sal', 100), new Player('test', 55), new Player('Jimmy', 2)]);
-
+function Leaderboard(playerList) {
 	return (
 		<div className="flex flex-col items-center bg-navy font-rubikone text-center text-white min-h-screen">
 			<div className="flex flex-col w-[90%]">

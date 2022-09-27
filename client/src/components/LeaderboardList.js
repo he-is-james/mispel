@@ -1,5 +1,5 @@
 
-function LeaderboardList(props) {
+function LeaderboardList({playerList}) {
 
   const createPlayerCard=(player, score)=> {
     return (
@@ -12,7 +12,7 @@ function LeaderboardList(props) {
 
   return (
     <div className="flex-col max-h-[40rem] space-y-3 overflow-y-scroll">
-      {props.playerList.map( player => createPlayerCard(player.name, player.score) )}
+      {Object.keys(playerList).map(player => createPlayerCard(playerList[player].name, playerList[player].score) )}
     </div>
   );
 }

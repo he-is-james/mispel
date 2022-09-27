@@ -84,6 +84,13 @@ io.on('connection', (socket) => {
     socket.to(data.roomID).emit('start-player');
   })
 
+  socket.on('answered-correctly', (data) => {
+    socket.to(data.roomID).emit('player-answered-correctly', data.playerInfo);
+  })
+
+  socket.on('go-next-word', (data) => {
+    socket.to(data.roomID).emit('move-to-next-word');
+  })
   socket.on("disconnecting", async (reason) => {
     
     const [, roomID] = socket.rooms;

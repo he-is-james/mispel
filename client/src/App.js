@@ -27,7 +27,7 @@ function App() {
           <Route path="join-room" element={<JoinRoom socket = {socket}/>} />
           <Route path="waiting-room" element={<WaitingRoom socket = {socket}/> } />
           <Route path="game-room" element={<GameRoom socket = {socket}/>} />
-          <Route path="leaderboard" element={<Leaderboard socket = {socket}/>} />
+          {/* <Route path="leaderboard" element={<Leaderboard socket = {socket}/>} /> */}
           <Route path="podium" element={<Podium socket = {socket}/>} />
         </Routes>
       </BrowserRouter>

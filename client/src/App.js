@@ -1,8 +1,6 @@
 import Landing from './pages/Landing';
-import JoinRoom from './pages/JoinRoom';
 import WaitingRoom from './pages/WaitingRoom'
 import GameRoom from './pages/GameRoom'
-import Leaderboard from './pages/Leaderboard'
 import Podium from './pages/Podium'
 import {io} from 'socket.io-client';
 import {useState} from 'react';
@@ -24,10 +22,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing socket = {socket}/>} />
           <Route path="/:roomID" element={<Landing socket = {socket}/>} />
-          <Route path="join-room" element={<JoinRoom socket = {socket}/>} />
           <Route path="waiting-room" element={<WaitingRoom socket = {socket}/> } />
           <Route path="game-room" element={<GameRoom socket = {socket}/>} />
-          <Route path="leaderboard" element={<Leaderboard socket = {socket}/>} />
           <Route path="podium" element={<Podium socket = {socket}/>} />
         </Routes>
       </BrowserRouter>
